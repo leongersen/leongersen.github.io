@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="wNumb.js - JavaScript Number and Money formatting. Tiny library for parsing and formatting numbers for currencies and other displays.">
+
+	<title>wNumb.js - JavaScript Number formatting | Refreshless.com</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="https://refreshless.com/nouislider/assets/base.css" rel="stylesheet">
+	<link href="https://refreshless.com/nouislider/assets/prism.css" rel="stylesheet">
+	
+	<link rel="canonical" href="https://refreshless.com/wnumb/">
+
+</head>
+
+<body class="language-javascript">
+
+	<div class="bar-group">
+		<a class="bar-link project" href="/wnumb/">wNumb</a>
+		<a class="bar-link" href="/wnumb/options/">Formatting options</a>
+		<a class="bar-link download" href="https://github.com/leongersen/wnumb/archive/1.1.0.zip" onclick="return trackLink(this, 'wNumb','download')">Download wNumb</a>
+	</div>
+
+	<div class="content">
+
+		<h1>wNumb.js</h1>
+		<h2>JavaScript Number & Money formatting</h2>
+
+		<section>
+			<p class="intro">wNumb is a formatting library with a dead-simple interface. It has two methods: <br><strong>to</strong> and <strong>from</strong>. Licensed <a onclick="return trackLink(this, 'wNumb','license')" href="http://www.wtfpl.net/about/">WTFPL</a>, so free for personal and commercial use. <br>At <strong>989 bytes</strong> for the compressed + Gzipped version, page loads won't suffer.<br><br>Works in all modern browsers and IE7+.</p>
+
+			<div style="max-width:600px;text-align:center;">
+			<a class="button" href="https://github.com/leongersen/wnumb/archive/1.1.0.zip" onclick="return trackLink(this, 'wNumb','download')">Download wNumb from GitHub</a>
+			<a href="/wnumb/options/" class="strong-link">All formatting options</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>Usage</h2>
+
+			
+<pre><code>var moneyFormat = wNumb({
+	mark: '.',
+	thousand: ',',
+	prefix: '$ ',
+	suffix: ' p.p.'
+});
+
+// Format a number:
+moneyFormat.to( 301980.62 );
+	=> '$ 301,980.62 p.p.'
+
+// Get a number back:
+moneyFormat.from( '$ 301,980.62 p.p.' );
+	=> 301980.62
+</code></pre>		</section>
+
+		<section>
+			<h2>Examples</h2>
+
+			
+<pre><code>// Appending money-formatting
+var Format = wNumb({
+	prefix: '$ ',
+	decimals: 3,
+	thousand: ','
+});
+
+// Numbers are always correctly rounded
+Format.to ( 980735.2635 )
+	=> '$ 980,735.264'
+</code></pre>			
+<pre><code>// Manually edit numbers
+var Format = wNumb({
+	thousand: '.',
+	encoder: function( a ){
+		return a * 1E7;
+	},
+	decoder: function( a ){
+		return a / 1E7;
+	}
+});
+
+Format.from ( '-95.060.000.000' )
+	=> -9506
+</code></pre>			
+<pre><code>// Prefixing negative numbers with a string
+var Format = wNumb({
+	prefix: '$',
+	negativeBefore: '[NEGATIVE] '
+});
+
+Format.to ( -260 )
+	=> '[NEGATIVE] $260'
+Format.from ( '[NEGATIVE] $260' )
+	=> -260 
+</code></pre>			
+<pre><code>// Parsing miss-matches and typo's
+var Format = wNumb({
+	prefix: '$',
+	suffix: ',-',
+	thousand: ','
+});
+
+Format.to ( '90000' )
+	=> '$90,000,-'
+
+// No problem. If there is a sensible number in the entry,
+// it'll be extracted, even if pre/post-fixes are missing or off.
+Format.from ( '90000 money' )
+	=> 90000
+	
+// No idea... If the value makes no sense,
+// the 'from' method returns false.
+Format.from ( 'spaaaaacceeee!!!' )
+	=> false
+</code></pre>		</section>
+	</div>
+
+	<script src="/nouislider/assets/prism.js"></script>
+
+	</body>

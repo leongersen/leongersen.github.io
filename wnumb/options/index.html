@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Full overview of all formatting options in the wNumb formatting library.">
+
+	<title>wNumb.js - All formatting options | Refreshless.com</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="https://refreshless.com/nouislider/assets/base.css" rel="stylesheet">
+	<link href="https://refreshless.com/nouislider/assets/prism.css" rel="stylesheet">
+
+	<link rel="canonical" href="https://refreshless.com/options/">
+</head>
+
+<body class="language-javascript">
+
+	<div class="bar-group">
+		<a class="bar-link project" href="/wnumb/">wNumb</a>
+		<a class="bar-link" href="/wnumb/options/">Formatting options</a>
+		<a class="bar-link download" href="https://github.com/leongersen/wnumb/archive/1.0.2.zip" onclick="return trackLink(this, 'wNumb','download')">Download wNumb</a>
+	</div>
+
+	<div class="content">
+
+		<h2>Options</h2>
+
+		<table class="data-table formatting-table">
+			<tr>
+				<td style="width:220px">decimals</td>
+				<td>The number of <strong>decimals</strong> to include in the result. Limited to <code>7</code>.</td>
+			</tr>
+			<tr>
+				<td>mark</td>
+				<td>The decimal separator. <br>Defaults to <code>'.'</code> if <b>thousand</b> isn't already set to <code>'.'</code>.</td>
+			</tr>
+			<tr>
+				<td>thousand</td>
+				<td>Separator for <strong>large numbers</strong>. For example: <code>' '</code> would <br>result in a formatted number of <code>1 000 000</code>.</td>
+			</tr>
+			<tr>
+				<td>prefix</td>
+				<td>A string to <strong>prepend</strong> to the number. Use cases include prefixing <br>with money symbols such as <code>'$'</code> or <code>'€'</code>.</td>
+			</tr>
+			<tr>
+				<td>suffix</td>
+				<td>A number to append to a number. For example: <code>',-'</code>.</td>
+			</tr>
+			<tr>
+				<td>negative</td>
+				<td>The prefix for negative values. Defaults to <code>'-'</code> if <b>negativeBefore</b> isn't set.</td>
+			</tr>
+			<tr>
+				<td>negativeBefore</td>
+				<td>The prefix for a negative number.<br>Inserted before <b>prefix</b>.</td>
+			</tr>
+			<tr>
+				<td>encoder</td>
+				<td>
+					<p>This is a powerful option to manually modify the slider output.<br>For example, to show a number in another currency:</p>
+		<pre><code>function( value ){
+			return value * 1.32;
+		}</code></pre>
+				</td>
+			</tr>
+			<tr>
+				<td>decoder</td>
+				<td>
+					<p>Reverse the operations set in <b>encoder</b>. <br>Use this option to undo modifications made while encoding the value.</p>
+		<pre><code>function( value ){
+			return value / 1.32;
+		}</code></pre>
+				</td>
+			</tr>
+			<tr>
+				<td>edit</td>
+				<td>Similar to <b>encoder</b>, but applied <em>after</em> all other formatting options are applied.</td>
+			</tr>
+			<tr>
+				<td>undo</td>
+				<td>Similar to <b>decoder</b> and the reverse for <b>edit</b>.<br>Applied <em>before</em> all other formatting options are applied.</td>
+			</tr>
+		</table>
+	</div>
+
+	<script src="/nouislider/assets/prism.js"></script>
+
+	</body>
