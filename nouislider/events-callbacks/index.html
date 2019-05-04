@@ -1,0 +1,353 @@
+---
+permalink: https://refreshless.com/nouislider/events-callbacks/
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Listen to everything that happens, and run your code when you want too. noUiSlider has a bunch of events and callbacks. Read all about them!">
+
+    <title>noUiSlider - Events and callbacks | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="https://refreshless.com/nouislider/events-callbacks/">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<h1>Events</h1>
+
+<section>
+
+	<div class="view-more">
+
+		<p>noUiSlider offers several ways to listen to interaction: <code>'update'</code>, <code>'change'</code>, <code>'set'</code> and <code>'slide'</code>. You can use these events all at the same time. There are also the <code>'start'</code> and <code>'end'</code> events, that fire when a drag is started or ended.</p>
+
+		<p>Events always fire in the following order:</p>
+
+		<p><code>'start'</code> &gt; <code>'slide'</code> &gt; <code>'update'</code> &gt; <code>'change'</code> &gt; <code>'set'</code> &gt; <code>'end'</code></p>
+
+	</div>
+
+	<div class="side">
+
+		<div class="example">
+
+			<div id="slider-events"></div>
+
+			<div class="logger">
+				<div id="l-update">Update</div>
+				<div id="l-slide">Slide</div>
+				<div id="l-set">Set</div>
+				<div id="l-change">Change</div>
+				<div id="l-start">Start</div>
+				<div id="l-end">End</div>
+			</div>
+
+			<div class="logger">
+				<input id="input-log">
+				<button id="setter">.set([ 5, 15 ])</button>
+			</div>
+
+			
+<script>
+function addClassFor(element, className, duration) {
+    element.classList.add(className);
+    setTimeout(function () {
+        element.classList.remove(className);
+    }, duration);
+}
+</script>			
+<script>
+var slider = document.getElementById('slider-events');
+var setter = document.getElementById('setter');
+var inputLog = document.getElementById('input-log');
+
+noUiSlider.create(slider, {
+    start: [0, 10],
+    range: {
+        'min': [0],
+        'max': [20]
+    }
+});
+</script>			
+<script>
+setter.addEventListener('click', function () {
+    slider.noUiSlider.set([5, 15]);
+});
+
+slider.noUiSlider.on('update', function (values, handle) {
+    if (handle === 0) {
+        inputLog.value = values[handle];
+    }
+});
+
+inputLog.addEventListener('change', function () {
+    slider.noUiSlider.set([this.value, null]);
+});
+</script>			
+<script>
+var lUpdate = document.getElementById('l-update');
+var lSlide = document.getElementById('l-slide');
+var lSet = document.getElementById('l-set');
+var lChange = document.getElementById('l-change');
+var lStart = document.getElementById('l-start');
+var lEnd = document.getElementById('l-end');
+
+slider.noUiSlider.on('update', function () {
+    addClassFor(lUpdate, 'tShow', 450);
+});
+
+slider.noUiSlider.on('slide', function () {
+    addClassFor(lSlide, 'tShow', 450);
+});
+
+slider.noUiSlider.on('set', function () {
+    addClassFor(lSet, 'tShow', 450);
+});
+
+slider.noUiSlider.on('change', function () {
+    addClassFor(lChange, 'tShow', 450);
+});
+
+slider.noUiSlider.on('start', function () {
+    addClassFor(lStart, 'tShow', 450);
+});
+
+slider.noUiSlider.on('end', function () {
+    addClassFor(lEnd, 'tShow', 450);
+});
+</script>		</div>
+	</div>
+</section>
+
+
+<section>
+
+	<table class="data-table events-table">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th width="65">Update</th>
+				<th width="65">Slide</th>
+				<th width="65">Set</th>
+				<th width="65">Change</th>
+				<th width="65">Start</th>
+				<th width="65">End</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><span>A handle is <strong>activated</strong>, starting dragging</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>A handle is <strong>released</strong> after dragging</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+			</tr>
+			<tr>
+				<td><span>A slider is moved by <strong>tapping</strong> it</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>A handle moves while <strong>dragging</strong></span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>The <strong><code>.set()</code></strong> method is called</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>When bound using the <strong><code>.on()</code></strong> method</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>A handle is moved by arrow keys</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-yes"><span>Yes</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+				<td class="events-no"><span>No</span></td>
+			</tr>
+		</tbody>
+	</table>
+</section>
+
+
+<a href="#section-binding" id="section-binding" class="section-link">&sect;</a><h2>Binding</h2>
+
+<section>
+
+	<div class="view">
+		<p>noUiSlider uses a custom binding model with support for namespaces. There are two methods, <code>.on(eventName, callback)</code> and <code>.off(eventName)</code>. Events can be namespaced by appending a period ('.') and an identifier to the event name.</p>
+
+		<p>Nested namespaces (<code>'slide.something.else'</code>) are not supported, and are threated as a single namespace (so <code>'.a.b'</code> isn't related to <code>'.a'</code>).</p>
+
+		<p><code>values</code> is an array containing the current slider values, with formatting applied. <code>handle</code> is the index of the handle that caused the event, starting at zero. <code>values[handle]</code> gives the value for the handle that triggered the event.</p>
+
+		<p><code>unencoded</code> contains the slider values without any formatting. </p>
+
+		<p>For all events, <code>this</code> is set to the current slider's API, containing (among others) the <code>.get()</code> and <code>.set()</code> methods.</p>
+	</div>
+
+	
+<pre><code>function doSomething(values, handle, unencoded, tap, positions) {
+    // values: Current slider values (array);
+    // handle: Handle that caused the event (number);
+    // unencoded: Slider values without formatting (array);
+    // tap: Event was caused by the user tapping the slider (boolean);
+    // positions: Left offset of the handles (array);
+}
+
+// Binding signature
+slider.noUiSlider.on(eventName, doSomething);
+
+// Binding namespaced events
+slider.noUiSlider.on('set.one', function () { });
+slider.noUiSlider.on('change.one', function () { });
+
+// Remove all events in the 'one' namespace.
+slider.noUiSlider.off('.one');
+
+// Remove all events
+slider.noUiSlider.off();
+
+// Remove all 'change' events in any namespace.
+slider.noUiSlider.off('change');
+</code></pre>
+</section>
+
+
+<a href="#section-update" id="section-update" class="section-link">&sect;</a><h2>Update</h2>
+
+<section>
+
+	<div class="view">
+		<p>Use this event when synchronizing the slider value to another element, such as an <code>&lt;input&gt;</code>. It fires every time the slider values are <strong>changed</strong>, either by a user or by calling API methods. Additionally, it fires <strong>immediately</strong> when bound. In most cases, this event should be more convenient than the <code>'slide'</code> event.</p>
+	</div>
+</section>
+
+
+<a href="#section-slide" id="section-slide" class="section-link">&sect;</a><h2>Slide</h2>
+
+<section>
+
+	<div class="view">
+		<p>This event is useful when you specifically want to listen to a handle being dragged, but want to <strong>ignore other updates</strong> to the slider value. This event also fires on a change by a 'tap'. In most cases, the <code>'update'</code> is the better choice.</p>
+	</div>
+</section>
+
+<a href="#section-set" id="section-set" class="section-link">&sect;</a><h2>Set</h2>
+
+<section>
+
+	<div class="view">
+		<p>Whenever a slider is changed to a new value, this event is fired. This function will trigger every time a slider <em>stops</em> changing, <strong>including</strong> after calls to the <code>.set()</code> method. You can consider this 'end of slide'.</p>
+	</div>
+
+</section>
+
+
+<a href="#section-change" id="section-change" class="section-link">&sect;</a><h2>Change</h2>
+
+<section>
+
+	<div class="view">
+		<p>This event is similar to the <code>'change'</code> events on regular <code>&lt;input&gt;</code> elements. It fires when a user <em>stops</em> sliding, or when a slider value is changed by 'tap'.</p>
+	</div>
+</section>
+
+
+<a href="#section-start" id="section-start" class="section-link">&sect;</a><h2>Start</h2>
+
+<section>
+
+	<div class="view">
+		<p>This event fires when a handle is clicked (<code>mousedown</code>, or the equivalent touch events).</p>
+	</div>
+</section>
+
+
+<a href="#section-end" id="section-end" class="section-link">&sect;</a><h2>End</h2>
+
+<section>
+
+	<div class="view">
+		<p>This event is the opposite of the <code>'start'</code> event. If fires when a handle is released (<code>mouseup</code> etc), or when a slide is canceled due to other reasons (such as mouse cursor leaving the browser window).</p>
+	</div>
+</section>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>

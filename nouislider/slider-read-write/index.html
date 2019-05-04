@@ -1,0 +1,321 @@
+---
+permalink: https://refreshless.com/nouislider/slider-read-write/
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Reading and setting values from a slider is as easy as reading from any other form element.">
+
+    <title>noUiSlider - Getting and setting slider values | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="https://refreshless.com/nouislider/slider-read-write/">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<h1>Getting and setting slider values</h1>
+
+
+<a href="#section-reading" id="section-reading" class="section-link">&sect;</a><h2>Reading slider values</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>noUiSlider has an API with two simple methods: <code>.get()</code> and <code>.set()</code>. To get the current slider value:</p>
+
+		
+<pre><code>slider.noUiSlider.get();
+</code></pre>
+		<p>For one-handle sliders, calling <code>.get()</code> will return the value as a <code>'string'</code>. For multi-handle sliders, an <code>array['string', 'string', ...]</code> will be returned.</p>
+	</div>
+</section>
+
+
+<a href="#section-setting" id="section-setting" class="section-link">&sect;</a><h2>Setting slider values</h2>
+
+<section>
+
+	<div class="view">
+
+        <p>If you have configured the slider to use one handle, you can change the current value by passing a number to the <code>.set()</code> method.</p>
+
+        <p>For sliders with multiple handles, pass an array. One-handled sliders will also accept arrays.</p>
+
+		<p>Within an array, you can set any position to <code>null</code> to you leave a handle unchanged.</p>
+
+        <p>noUiSlider will always limit values to the slider range.</p>
+
+        <p>To set a single slider handle, the <code>setHandle</code> method can be used. This method accepts a zero-indexed handle number, a value and optionally a 'fire set event' boolean.</p>
+
+        <p>Passing <code>null</code> as the value to <code>setHandle</code> will leave the handle unchanged.</p>
+
+		<p>To return to the initial slider values, you can use the <code>.reset()</code> method. This will <strong>only</strong> reset the slider <i>values</i>.</p>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, /* { options } */);
+
+// Set one handled slider
+slider.noUiSlider.set(10);
+slider.noUiSlider.set([150]);
+
+// Set the upper handle on a slider with two handles,
+// don't change the lower one
+slider.noUiSlider.set([null, 14]);
+
+// On a slider with three handles,
+// set the third to 12 (the handleNumber is 0-indexed)
+// Then: fire the set event
+slider.noUiSlider.setHandle(2, 12, true);
+
+// Set both slider handles on a slider with two handles
+slider.noUiSlider.set([13.2, 15.7]);
+
+// Return to the 'start' values
+// Does NOT reset any other slider properties
+slider.noUiSlider.reset();
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-example" id="section-example" class="section-link">&sect;</a><h2>Example</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>Clicking the button below sets the slider, which uses a <code>range</code> from <code>0</code> to <code>100</code>, to <code>20</code>.</p>
+
+		<div class="example">
+			<div id="slider"></div>
+			<div class="logger">
+				<button id="write-button">Set to 20</button>
+				<button id="read-button">Read slider value</button>
+			</div>
+			
+<script>
+var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, {
+    start: [80],
+    range: {
+        'min': [0],
+        'max': [100]
+    }
+});
+</script>			
+<script>
+// Set the slider value to 20
+document.getElementById('write-button').addEventListener('click', function () {
+    slider.noUiSlider.set(20);
+});
+
+// Read the slider value.
+document.getElementById('read-button').addEventListener('click', function () {
+    alert(slider.noUiSlider.get());
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, {
+    start: [80],
+    range: {
+        'min': [0],
+        'max': [100]
+    }
+});
+</code></pre>
+		<div class="viewer-header">Handling button presses</div>
+
+		<div class="viewer-content">
+			
+<pre><code>// Set the slider value to 20
+document.getElementById('write-button').addEventListener('click', function () {
+    slider.noUiSlider.set(20);
+});
+
+// Read the slider value.
+document.getElementById('read-button').addEventListener('click', function () {
+    alert(slider.noUiSlider.get());
+});
+</code></pre>		</div>
+	</div>
+
+</section>
+
+
+<a href="#section-formatting" id="section-formatting" class="section-link">&sect;</a><h2>Number formatting</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>To format the slider output, noUiSlider offers a <code>format</code> option. Simply specify <code>to</code> and <code>from</code> functions to encode and decode the values. See <em>manual formatting</em> to the right for usage information.</p>
+
+		<p>By default, noUiSlider will format output with <strong>2 decimals</strong>.</p>
+
+		<p>Manual formatting can be error-prone, so noUiSlider has support for <a href="/wnumb">the wNumb formatting library</a>. wNumb offers a wide range of options and provides number validation.</p>
+
+        <p>Formatting can also be used for the <code>aria-valuenow</code> accessibility attribute using the <code>ariaFormat</code> option.</p>
+
+		<p>Note that if the <code>.to()</code> method returns a <code>Number</code>, noUiSlider's <code>.get()</code> will also return <code>Number</code>s. See <a href="https://github.com/leongersen/noUiSlider/issues/813">this issue </a> for more details.
+		
+		<div class="example">
+			<div id="slider-format"></div>
+			<input title="Formatted number" id="input-format">
+			
+<script>
+var sliderFormat = document.getElementById('slider-format');
+
+noUiSlider.create(sliderFormat, {
+    start: [20000],
+    step: 1000,
+    range: {
+        'min': [20000],
+        'max': [80000]
+    },
+    ariaFormat: wNumb({
+        decimals: 3
+    }),
+    format: wNumb({
+        decimals: 3,
+        thousand: '.',
+        suffix: ' (US $)'
+    })
+});
+</script>			
+<script>
+var inputFormat = document.getElementById('input-format');
+
+sliderFormat.noUiSlider.on('update', function (values, handle) {
+    inputFormat.value = values[handle];
+});
+
+inputFormat.addEventListener('change', function () {
+    sliderFormat.noUiSlider.set(this.value);
+});
+</script>		</div>
+
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Formatting with wNumb</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var sliderFormat = document.getElementById('slider-format');
+
+noUiSlider.create(sliderFormat, {
+    start: [20000],
+    step: 1000,
+    range: {
+        'min': [20000],
+        'max': [80000]
+    },
+    ariaFormat: wNumb({
+        decimals: 3
+    }),
+    format: wNumb({
+        decimals: 3,
+        thousand: '.',
+        suffix: ' (US $)'
+    })
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Manual formatting</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var sliderFormat = document.getElementById('slider-format');
+
+noUiSlider.create(sliderFormat, {
+    start: [20],
+    step: 10,
+    range: {
+        'min': [20],
+        'max': [80]
+    },
+    format: {
+        to: function (value) {
+            return value + ',-';
+        },
+        from: function (value) {
+            return value.replace(',-', '');
+        }
+    }
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Linking the input field</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var inputFormat = document.getElementById('input-format');
+
+sliderFormat.noUiSlider.on('update', function (values, handle) {
+    inputFormat.value = values[handle];
+});
+
+inputFormat.addEventListener('change', function () {
+    sliderFormat.noUiSlider.set(this.value);
+});
+</code></pre>		</div>
+	</div>
+
+</section>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>

@@ -1,0 +1,1656 @@
+---
+permalink: https://refreshless.com/nouislider/examples/
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="noUiSlider has a selection of examples you can use to implement a slider easily. Take a look!">
+
+    <title>noUiSlider - Examples and hints | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="https://refreshless.com/nouislider/examples/">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<section>
+	<ul>
+		<li><a href="#section-colorpicker">Color Picker</a></li>
+		<li><a href="#section-dates">Using dates</a></li>
+		<li><a href="#section-html5">Working with HTML5 input types</a></li>
+		<li><a href="#section-non-linear">Using non linear ranges</a></li>
+		<li><a href="#section-lock">Locking two sliders together</a></li>
+		<li><a href="#section-click-pips">Moving the slider by clicking pips</a></li>
+		<li><a href="#section-hiding-tooltips">Only showing tooltips when sliding handles</a></li>
+		<li><a href="#section-colored-connect">Colored connect elements</a></li>
+		<li><a href="#section-keypress">Changing the slider value by keypress</a></li>
+		<li><a href="#section-skipping">Skipping values on a slider</a></li>
+		<li><a href="#section-huge-numbers">Working with huge numbers</a></li>
+		<li><a href="#section-toggle">Create a toggle</a></li>
+		<li><a href="#section-soft-limits">Block the edges of a slider</a></li>
+		<li><a href="#section-from-center">Connect to the center of a slider</a></li>
+	</ul>
+</section>
+
+<section>
+    <div class="notice">Can't find something? See the full <a href="/nouislider/reference/">options reference</a>.</div>
+</section>
+
+<a href="#section-colorpicker" id="section-colorpicker" class="section-link">&sect;</a><h1>Colorpicker</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>We'll initialize all sliders with the same options, and use the <code>update</code> callback to keep to color in sync with the slider values.</p>
+
+		<p>This callback fires any time a slider value updates.</p>
+
+		<div id="colorpicker">
+			<div class="sliders" id="red"></div>
+			<div class="sliders" id="green"></div>
+			<div class="sliders" id="blue"></div>
+
+			<div id="result"></div>
+			
+<script>
+var resultElement = document.getElementById('result');
+var sliders = document.getElementsByClassName('sliders');
+var colors = [0, 0, 0];
+
+[].slice.call(sliders).forEach(function (slider, index) {
+
+    noUiSlider.create(slider, {
+        start: 127,
+        connect: [true, false],
+        orientation: "vertical",
+        range: {
+            'min': 0,
+            'max': 255
+        },
+        format: wNumb({
+            decimals: 0
+        })
+    });
+
+    // Bind the color changing function to the update event.
+    slider.noUiSlider.on('update', function () {
+
+        colors[index] = slider.noUiSlider.get();
+
+        var color = 'rgb(' + colors.join(',') + ')';
+
+        resultElement.style.background = color;
+        resultElement.style.color = color;
+    });
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Colorpicker</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var resultElement = document.getElementById('result');
+var sliders = document.getElementsByClassName('sliders');
+var colors = [0, 0, 0];
+
+[].slice.call(sliders).forEach(function (slider, index) {
+
+    noUiSlider.create(slider, {
+        start: 127,
+        connect: [true, false],
+        orientation: "vertical",
+        range: {
+            'min': 0,
+            'max': 255
+        },
+        format: wNumb({
+            decimals: 0
+        })
+    });
+
+    // Bind the color changing function to the update event.
+    slider.noUiSlider.on('update', function () {
+
+        colors[index] = slider.noUiSlider.get();
+
+        var color = 'rgb(' + colors.join(',') + ')';
+
+        resultElement.style.background = color;
+        resultElement.style.color = color;
+    });
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">CSS</div>
+
+		<div class="viewer-content">
+			
+<style>#red, #green, #blue {
+	margin: 10px;
+	display: inline-block;
+	height: 200px;
+}
+
+#colorpicker {
+	height: 240px;
+	width: 310px;
+	margin: 0 auto;
+	padding: 10px;
+	border: 1px solid #BFBFBF;
+}
+
+#result {
+	margin: 60px 26px;
+	height: 100px;
+	width: 100px;
+	display: inline-block;
+	vertical-align: top;
+	color: rgb(127, 127, 127);
+	background: rgb(127, 127, 127);
+	border: 1px solid #fff;
+	box-shadow: 0 0 10px;
+}
+
+#red .noUi-connect {
+	background: #c0392b;
+}
+
+#green .noUi-connect {
+	background: #27ae60;
+}
+
+#blue .noUi-connect {
+	background: #2980b9;
+}
+</style><pre class="language-css"><code>#red, #green, #blue {
+	margin: 10px;
+	display: inline-block;
+	height: 200px;
+}
+
+#colorpicker {
+	height: 240px;
+	width: 310px;
+	margin: 0 auto;
+	padding: 10px;
+	border: 1px solid #BFBFBF;
+}
+
+#result {
+	margin: 60px 26px;
+	height: 100px;
+	width: 100px;
+	display: inline-block;
+	vertical-align: top;
+	color: rgb(127, 127, 127);
+	background: rgb(127, 127, 127);
+	border: 1px solid #fff;
+	box-shadow: 0 0 10px;
+}
+
+#red .noUi-connect {
+	background: #c0392b;
+}
+
+#green .noUi-connect {
+	background: #27ae60;
+}
+
+#blue .noUi-connect {
+	background: #2980b9;
+}
+</code></pre>		</div>
+
+	</div>
+</section>
+<a href="#section-dates" id="section-dates" class="section-link">&sect;</a><h1>Working with dates</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>This example shows how to convert dates to numerical ranges, and then use the <code>update</code> event to display them in a pretty format.</p>
+
+		<p>We'll be creating timestamps from strings. In order to do this easily, we'll define a new helper function. This function accepts a string, creates a <code>new Date</code> and then returns it as a timestamp.</p>
+
+		<div class="example">
+			<div id="slider-date"></div>
+			<span class="example-val" id="event-start"></span>
+			<span class="example-val" id="event-end"></span>
+			
+<script>
+// Create a new date from a string, return as a timestamp.
+function timestamp(str) {
+    return new Date(str).getTime();
+}
+</script>			
+<script>
+// Create a list of day and month names.
+var weekdays = [
+    "Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday",
+    "Saturday"
+];
+
+var months = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+];
+
+// Append a suffix to dates.
+// Example: 23 => 23rd, 1 => 1st.
+function nth(d) {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+        case 1:
+            return "st";
+        case 2:
+            return "nd";
+        case 3:
+            return "rd";
+        default:
+            return "th";
+    }
+}
+
+// Create a string representation of the date.
+function formatDate(date) {
+    return weekdays[date.getDay()] + ", " +
+        date.getDate() + nth(date.getDate()) + " " +
+        months[date.getMonth()] + " " +
+        date.getFullYear();
+}
+</script>			
+<script>
+var dateSlider = document.getElementById('slider-date');
+
+noUiSlider.create(dateSlider, {
+// Create two timestamps to define a range.
+    range: {
+        min: timestamp('2010'),
+        max: timestamp('2016')
+    },
+
+// Steps of one week
+    step: 7 * 24 * 60 * 60 * 1000,
+
+// Two more timestamps indicate the handle starting positions.
+    start: [timestamp('2011'), timestamp('2015')],
+
+// No decimals
+    format: wNumb({
+        decimals: 0
+    })
+});
+</script>			
+<script>
+var dateValues = [
+    document.getElementById('event-start'),
+    document.getElementById('event-end')
+];
+
+dateSlider.noUiSlider.on('update', function (values, handle) {
+    dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Timestamps</div>
+
+		<div class="viewer-content">
+			
+<pre><code>// Create a new date from a string, return as a timestamp.
+function timestamp(str) {
+    return new Date(str).getTime();
+}
+</code></pre>		</div>
+
+		<div class="viewer-header">Setup</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var dateSlider = document.getElementById('slider-date');
+
+noUiSlider.create(dateSlider, {
+// Create two timestamps to define a range.
+    range: {
+        min: timestamp('2010'),
+        max: timestamp('2016')
+    },
+
+// Steps of one week
+    step: 7 * 24 * 60 * 60 * 1000,
+
+// Two more timestamps indicate the handle starting positions.
+    start: [timestamp('2011'), timestamp('2015')],
+
+// No decimals
+    format: wNumb({
+        decimals: 0
+    })
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Slider control</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var dateValues = [
+    document.getElementById('event-start'),
+    document.getElementById('event-end')
+];
+
+dateSlider.noUiSlider.on('update', function (values, handle) {
+    dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Helper functions and formatting</div>
+
+		<div class="viewer-content">
+			<p>The <code>nth</code> function was borrowed from <a onclick="return trackLink(this, 'outlink','stackoverflow nth')" href="http://stackoverflow.com/questions/15397372/javascript-new-date-ordinal-st-nd-rd-th">this StackOverflow question</a>.</p>
+			
+<pre><code>// Create a list of day and month names.
+var weekdays = [
+    "Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday",
+    "Saturday"
+];
+
+var months = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+];
+
+// Append a suffix to dates.
+// Example: 23 => 23rd, 1 => 1st.
+function nth(d) {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+        case 1:
+            return "st";
+        case 2:
+            return "nd";
+        case 3:
+            return "rd";
+        default:
+            return "th";
+    }
+}
+
+// Create a string representation of the date.
+function formatDate(date) {
+    return weekdays[date.getDay()] + ", " +
+        date.getDate() + nth(date.getDate()) + " " +
+        months[date.getMonth()] + " " +
+        date.getFullYear();
+}
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-html5" id="section-html5" class="section-link">&sect;</a><h1>Using HTML5 input elements</h1>
+
+<section>
+
+	<div class="view">
+		<p>noUiSlider's <code>'update'</code> method is useful for synchronizing with other elements, such as <code>&lt;input&gt;</code> (<code>type="number"</code>) and <code>&lt;select&gt;</code>.</p>
+
+		<div class="example">
+			<div id="html5"></div>
+			<select id="input-select"></select>
+			<input type="number" min="-20" max="40" step="1" id="input-number">
+			
+<script>
+var select = document.getElementById('input-select');
+
+// Append the option elements
+for (var i = -20; i <= 40; i++) {
+
+    var option = document.createElement("option");
+    option.text = i;
+    option.value = i;
+
+    select.appendChild(option);
+}
+</script>			
+<script>
+var html5Slider = document.getElementById('html5');
+
+noUiSlider.create(html5Slider, {
+    start: [10, 30],
+    connect: true,
+    range: {
+        'min': -20,
+        'max': 40
+    }
+});
+</script>			
+<script>
+var inputNumber = document.getElementById('input-number');
+
+html5Slider.noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        inputNumber.value = value;
+    } else {
+        select.value = Math.round(value);
+    }
+});
+
+select.addEventListener('change', function () {
+    html5Slider.noUiSlider.set([this.value, null]);
+});
+
+inputNumber.addEventListener('change', function () {
+    html5Slider.noUiSlider.set([null, this.value]);
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Appending <code>&lt;option&gt;</code> elements</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var select = document.getElementById('input-select');
+
+// Append the option elements
+for (var i = -20; i &lt;= 40; i++) {
+
+    var option = document.createElement(&quot;option&quot;);
+    option.text = i;
+    option.value = i;
+
+    select.appendChild(option);
+}
+</code></pre>		</div>
+
+		<div class="viewer-header">Initializing the slider</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var html5Slider = document.getElementById('html5');
+
+noUiSlider.create(html5Slider, {
+    start: [10, 30],
+    connect: true,
+    range: {
+        'min': -20,
+        'max': 40
+    }
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Updating the <code>&lt;select&gt;</code> and <code>&lt;input&gt;</code></div>
+
+		<div class="viewer-content">
+			
+<pre><code>var inputNumber = document.getElementById('input-number');
+
+html5Slider.noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        inputNumber.value = value;
+    } else {
+        select.value = Math.round(value);
+    }
+});
+
+select.addEventListener('change', function () {
+    html5Slider.noUiSlider.set([this.value, null]);
+});
+
+inputNumber.addEventListener('change', function () {
+    html5Slider.noUiSlider.set([null, this.value]);
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Example CSS</div>
+
+		<div class="viewer-content">
+			
+<style>#input-select,
+#input-number {
+	padding: 7px;
+	margin: 15px 5px 5px;
+	width: 70px;
+}
+</style><pre class="language-css"><code>#input-select,
+#input-number {
+	padding: 7px;
+	margin: 15px 5px 5px;
+	width: 70px;
+}
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-non-linear" id="section-non-linear" class="section-link">&sect;</a><h1>Non linear slider</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>One of noUiSlider's core features is the ability to divide the range in a non-linear fashion. Stepping can be applied. This example shows where the handles are on the slider range in values and percentages.</p>
+
+		<div class="example">
+			<div id="nonlinear"></div>
+			<span class="example-val" id="lower-value"></span>
+			<span class="example-val" id="upper-value"></span>
+			
+<script>
+var nonLinearSlider = document.getElementById('nonlinear');
+
+noUiSlider.create(nonLinearSlider, {
+    connect: true,
+    behaviour: 'tap',
+    start: [500, 4000],
+    range: {
+        // Starting at 500, step the value by 500,
+        // until 4000 is reached. From there, step by 1000.
+        'min': [0],
+        '10%': [500, 500],
+        '50%': [4000, 1000],
+        'max': [10000]
+    }
+});
+</script>			
+<script>
+var nodes = [
+    document.getElementById('lower-value'), // 0
+    document.getElementById('upper-value')  // 1
+];
+
+// Display the slider value and how far the handle moved
+// from the left edge of the slider.
+nonLinearSlider.noUiSlider.on('update', function (values, handle, unencoded, isTap, positions) {
+    nodes[handle].innerHTML = values[handle] + ', ' + positions[handle].toFixed(2) + '%';
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Setting up the slider</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var nonLinearSlider = document.getElementById('nonlinear');
+
+noUiSlider.create(nonLinearSlider, {
+    connect: true,
+    behaviour: 'tap',
+    start: [500, 4000],
+    range: {
+        // Starting at 500, step the value by 500,
+        // until 4000 is reached. From there, step by 1000.
+        'min': [0],
+        '10%': [500, 500],
+        '50%': [4000, 1000],
+        'max': [10000]
+    }
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Read the slider value and the left offset</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var nodes = [
+    document.getElementById('lower-value'), // 0
+    document.getElementById('upper-value')  // 1
+];
+
+// Display the slider value and how far the handle moved
+// from the left edge of the slider.
+nonLinearSlider.noUiSlider.on('update', function (values, handle, unencoded, isTap, positions) {
+    nodes[handle].innerHTML = values[handle] + ', ' + positions[handle].toFixed(2) + '%';
+});
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-lock" id="section-lock" class="section-link">&sect;</a><h1>Locking sliders together</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>Two cross-updating sliders can be created using a combination of the <code>change</code> and <code>slide</code> events.</p>
+
+		<div class="example">
+			<div class="slider" id="slider1"></div>
+			<span class="example-val" id="slider1-span"></span>
+
+			<div class="slider" id="slider2"></div>
+			<span class="example-val" id="slider2-span"></span>
+
+			<button id="lockbutton" style="float: right; margin: 20px 0 0;">Lock</button>
+
+			
+<script>
+var lockedState = false;
+var lockedSlider = false;
+var lockedValues = [60, 80];
+
+var slider1 = document.getElementById('slider1');
+var slider2 = document.getElementById('slider2');
+
+var lockButton = document.getElementById('lockbutton');
+var slider1Value = document.getElementById('slider1-span');
+var slider2Value = document.getElementById('slider2-span');
+
+// When the button is clicked, the locked state is inverted.
+lockButton.addEventListener('click', function () {
+    lockedState = !lockedState;
+    this.textContent = lockedState ? 'unlock' : 'lock';
+});
+</script>			
+<script>
+noUiSlider.create(slider1, {
+    start: 60,
+
+    // Disable animation on value-setting,
+    // so the sliders respond immediately.
+    animate: false,
+    range: {
+        min: 50,
+        max: 100
+    }
+});
+
+noUiSlider.create(slider2, {
+    start: 80,
+    animate: false,
+    range: {
+        min: 50,
+        max: 100
+    }
+});
+
+slider1.noUiSlider.on('update', function (values, handle) {
+    slider1Value.innerHTML = values[handle];
+});
+
+slider2.noUiSlider.on('update', function (values, handle) {
+    slider2Value.innerHTML = values[handle];
+});
+</script>			
+<script>
+function setLockedValues() {
+    lockedValues = [
+        Number(slider1.noUiSlider.get()),
+        Number(slider2.noUiSlider.get())
+    ];
+}
+
+slider1.noUiSlider.on('change', setLockedValues);
+slider2.noUiSlider.on('change', setLockedValues);
+
+slider1.noUiSlider.on('slide', function (values, handle) {
+    crossUpdate(values[handle], slider2);
+});
+
+slider2.noUiSlider.on('slide', function (values, handle) {
+    crossUpdate(values[handle], slider1);
+});
+</script>			
+<script>
+function crossUpdate(value, slider) {
+
+    // If the sliders aren't interlocked, don't
+    // cross-update.
+    if (!lockedState) return;
+
+    // Select whether to increase or decrease
+    // the other slider value.
+    var a = slider1 === slider ? 0 : 1;
+
+    // Invert a
+    var b = a ? 0 : 1;
+
+    // Offset the slider value.
+    value -= lockedValues[b] - lockedValues[a];
+
+    // Set the value
+    slider.noUiSlider.set(value);
+}
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Setup and button clicks</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var lockedState = false;
+var lockedSlider = false;
+var lockedValues = [60, 80];
+
+var slider1 = document.getElementById('slider1');
+var slider2 = document.getElementById('slider2');
+
+var lockButton = document.getElementById('lockbutton');
+var slider1Value = document.getElementById('slider1-span');
+var slider2Value = document.getElementById('slider2-span');
+
+// When the button is clicked, the locked state is inverted.
+lockButton.addEventListener('click', function () {
+    lockedState = !lockedState;
+    this.textContent = lockedState ? 'unlock' : 'lock';
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">The <code>Crossupdate</code> function</div>
+
+		<div class="viewer-content">
+			
+<pre><code>function crossUpdate(value, slider) {
+
+    // If the sliders aren't interlocked, don't
+    // cross-update.
+    if (!lockedState) return;
+
+    // Select whether to increase or decrease
+    // the other slider value.
+    var a = slider1 === slider ? 0 : 1;
+
+    // Invert a
+    var b = a ? 0 : 1;
+
+    // Offset the slider value.
+    value -= lockedValues[b] - lockedValues[a];
+
+    // Set the value
+    slider.noUiSlider.set(value);
+}
+</code></pre>		</div>
+
+		<div class="viewer-header">Initializing the sliders</div>
+
+		<div class="viewer-content">
+			
+<pre><code>noUiSlider.create(slider1, {
+    start: 60,
+
+    // Disable animation on value-setting,
+    // so the sliders respond immediately.
+    animate: false,
+    range: {
+        min: 50,
+        max: 100
+    }
+});
+
+noUiSlider.create(slider2, {
+    start: 80,
+    animate: false,
+    range: {
+        min: 50,
+        max: 100
+    }
+});
+
+slider1.noUiSlider.on('update', function (values, handle) {
+    slider1Value.innerHTML = values[handle];
+});
+
+slider2.noUiSlider.on('update', function (values, handle) {
+    slider2Value.innerHTML = values[handle];
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Linking the sliders together</div>
+
+		<div class="viewer-content">
+			
+<pre><code>function setLockedValues() {
+    lockedValues = [
+        Number(slider1.noUiSlider.get()),
+        Number(slider2.noUiSlider.get())
+    ];
+}
+
+slider1.noUiSlider.on('change', setLockedValues);
+slider2.noUiSlider.on('change', setLockedValues);
+
+slider1.noUiSlider.on('slide', function (values, handle) {
+    crossUpdate(values[handle], slider2);
+});
+
+slider2.noUiSlider.on('slide', function (values, handle) {
+    crossUpdate(values[handle], slider1);
+});
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-click-pips" id="section-click-pips" class="section-link">&sect;</a><h1>Moving the slider by clicking pips</h1>
+
+<section>
+
+	<div class="view">
+
+		<p><a href="https://github.com/leongersen/noUiSlider/issues/733">Issue #733</a> asks about clicking pips to move the slider to their value. noUiSlider 11 adds a <code>data-value</code> attribute to all <code>.noUi-value</code> elements that makes this easy.</code></code></p>
+
+		<div class="example">
+			<div class="slider" id="slider-pips"></div>
+
+			
+<script>
+var pipsSlider = document.getElementById('slider-pips');
+
+noUiSlider.create(pipsSlider, {
+    range: {
+        min: 0,
+        max: 100
+    },
+    start: [50],
+    pips: {mode: 'count', values: 5}
+});
+</script>			
+<script>
+var pips = pipsSlider.querySelectorAll('.noUi-value');
+
+function clickOnPip() {
+    var value = Number(this.getAttribute('data-value'));
+    pipsSlider.noUiSlider.set(value);
+}
+
+for (var i = 0; i < pips.length; i++) {
+
+    // For this example. Do this in CSS!
+    pips[i].style.cursor = 'pointer';
+    pips[i].addEventListener('click', clickOnPip);
+}
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Setup</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var pipsSlider = document.getElementById('slider-pips');
+
+noUiSlider.create(pipsSlider, {
+    range: {
+        min: 0,
+        max: 100
+    },
+    start: [50],
+    pips: {mode: 'count', values: 5}
+});
+</code></pre>		</div>
+
+		
+<pre><code>var pips = pipsSlider.querySelectorAll('.noUi-value');
+
+function clickOnPip() {
+    var value = Number(this.getAttribute('data-value'));
+    pipsSlider.noUiSlider.set(value);
+}
+
+for (var i = 0; i < pips.length; i++) {
+
+    // For this example. Do this in CSS!
+    pips[i].style.cursor = 'pointer';
+    pips[i].addEventListener('click', clickOnPip);
+}
+</code></pre>	</div>
+</section>
+<a href="#section-hiding-tooltips" id="section-hiding-tooltips" class="section-link">&sect;</a><h1>Only showing tooltips when sliding handles</h1>
+
+<section>
+
+	<div class="view">
+
+		<p><a href="https://github.com/leongersen/noUiSlider/issues/836">Issue #836</a> requested a way to toggle tooltips after slider creation. This effect can be achieved by using the <code>.noUi-active</code> class to show and hide the tooltips. No additional JavaScript is involved.</p>
+
+		<div class="example">
+			<div class="slider" id="slider-hide"></div>
+
+			
+<script>
+var hidingTooltipSlider = document.getElementById('slider-hide');
+
+noUiSlider.create(hidingTooltipSlider, {
+    range: {
+        min: 0,
+        max: 100
+    },
+    start: [20, 80],
+    tooltips: true
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		
+<style>.noUi-tooltip {
+    display: none;
+}
+.noUi-active .noUi-tooltip {
+    display: block;
+}
+</style><pre class="language-css"><code>.noUi-tooltip {
+    display: none;
+}
+.noUi-active .noUi-tooltip {
+    display: block;
+}
+</code></pre>	</div>
+</section>
+<a href="#section-colored-connect" id="section-colored-connect" class="section-link">&sect;</a><h1>Colored Connect Elements</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>noUiSlider's connect elements can be individually colored or otherwise styled.</p>
+
+		<div class="example">
+			<div class="slider" id="slider-color"></div>
+			
+<script>
+var slider = document.getElementById('slider-color');
+
+noUiSlider.create(slider, {
+    start: [4000, 8000, 12000, 16000],
+    connect: [false, true, true, true, true],
+    range: {
+        'min': [2000],
+        'max': [20000]
+    }
+});
+</script>			
+<script>
+var connect = slider.querySelectorAll('.noUi-connect');
+var classes = ['c-1-color', 'c-2-color', 'c-3-color', 'c-4-color', 'c-5-color'];
+
+for (var i = 0; i < connect.length; i++) {
+    connect[i].classList.add(classes[i]);
+}
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Slider setup</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var slider = document.getElementById('slider-color');
+
+noUiSlider.create(slider, {
+    start: [4000, 8000, 12000, 16000],
+    connect: [false, true, true, true, true],
+    range: {
+        'min': [2000],
+        'max': [20000]
+    }
+});
+</code></pre>		</div>
+
+		
+<pre><code>var connect = slider.querySelectorAll('.noUi-connect');
+var classes = ['c-1-color', 'c-2-color', 'c-3-color', 'c-4-color', 'c-5-color'];
+
+for (var i = 0; i < connect.length; i++) {
+    connect[i].classList.add(classes[i]);
+}
+</code></pre>		
+<style>.c-1-color { background: red; }
+.c-2-color { background: yellow; }
+.c-3-color { background: green; }
+.c-4-color { background: blue; }
+.c-5-color { background: purple; }
+</style><pre class="language-css"><code>.c-1-color { background: red; }
+.c-2-color { background: yellow; }
+.c-3-color { background: green; }
+.c-4-color { background: blue; }
+.c-5-color { background: purple; }
+</code></pre>	</div>
+</section>
+<a href="#section-steps-api" id="section-steps-api" class="section-link">&sect;</a><h1>Using the steps API</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>noUiSlider provides a <code>steps</code> API to determine the previous and next steps for a handle. In this example, pressing the keyboard arrow keys will increase/decrease the slider by one step.</p>
+
+		<p>Use of this API is not necessary for linear sliders, as the step is constant in that case.</p>
+
+		<p>We'll listen to keydown on the input element, and pass the event to a function so we can read the code that identifies the key.</p>
+
+		<div class="example">
+			<div id="steps-slider"></div>
+			<input type="text" id="input-with-keypress-1">
+			<input type="text" id="input-with-keypress-0">
+			
+<script>
+var stepsSlider = document.getElementById('steps-slider');
+var input0 = document.getElementById('input-with-keypress-0');
+var input1 = document.getElementById('input-with-keypress-1');
+var inputs = [input0, input1];
+
+noUiSlider.create(stepsSlider, {
+    start: [20, 80],
+    connect: true,
+    tooltips: [true, wNumb({decimals: 1})],
+    range: {
+        'min': [0],
+        '10%': [10, 10],
+        '50%': [80, 50],
+        '80%': 150,
+        'max': 200
+    }
+});
+
+stepsSlider.noUiSlider.on('update', function (values, handle) {
+    inputs[handle].value = values[handle];
+});
+</script>			
+<script>
+// Listen to keydown events on the input field.
+inputs.forEach(function (input, handle) {
+
+    input.addEventListener('change', function () {
+        stepsSlider.noUiSlider.setHandle(handle, this.value);
+    });
+
+    input.addEventListener('keydown', function (e) {
+
+        var values = stepsSlider.noUiSlider.get();
+        var value = Number(values[handle]);
+
+        // [[handle0_down, handle0_up], [handle1_down, handle1_up]]
+        var steps = stepsSlider.noUiSlider.steps();
+
+        // [down, up]
+        var step = steps[handle];
+
+        var position;
+
+        // 13 is enter,
+        // 38 is key up,
+        // 40 is key down.
+        switch (e.which) {
+
+            case 13:
+                stepsSlider.noUiSlider.setHandle(handle, this.value);
+                break;
+
+            case 38:
+
+                // Get step to go increase slider value (up)
+                position = step[1];
+
+                // false = no step is set
+                if (position === false) {
+                    position = 1;
+                }
+
+                // null = edge of slider
+                if (position !== null) {
+                    stepsSlider.noUiSlider.setHandle(handle, value + position);
+                }
+
+                break;
+
+            case 40:
+
+                position = step[0];
+
+                if (position === false) {
+                    position = 1;
+                }
+
+                if (position !== null) {
+                    stepsSlider.noUiSlider.setHandle(handle, value - position);
+                }
+
+                break;
+        }
+    });
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Initializing the slider and linking the input</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var stepsSlider = document.getElementById('steps-slider');
+var input0 = document.getElementById('input-with-keypress-0');
+var input1 = document.getElementById('input-with-keypress-1');
+var inputs = [input0, input1];
+
+noUiSlider.create(stepsSlider, {
+    start: [20, 80],
+    connect: true,
+    tooltips: [true, wNumb({decimals: 1})],
+    range: {
+        'min': [0],
+        '10%': [10, 10],
+        '50%': [80, 50],
+        '80%': 150,
+        'max': 200
+    }
+});
+
+stepsSlider.noUiSlider.on('update', function (values, handle) {
+    inputs[handle].value = values[handle];
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Listen to <code>keypress</code> on the input</div>
+
+		<div class="viewer-content">
+			
+<pre><code>// Listen to keydown events on the input field.
+inputs.forEach(function (input, handle) {
+
+    input.addEventListener('change', function () {
+        stepsSlider.noUiSlider.setHandle(handle, this.value);
+    });
+
+    input.addEventListener('keydown', function (e) {
+
+        var values = stepsSlider.noUiSlider.get();
+        var value = Number(values[handle]);
+
+        // [[handle0_down, handle0_up], [handle1_down, handle1_up]]
+        var steps = stepsSlider.noUiSlider.steps();
+
+        // [down, up]
+        var step = steps[handle];
+
+        var position;
+
+        // 13 is enter,
+        // 38 is key up,
+        // 40 is key down.
+        switch (e.which) {
+
+            case 13:
+                stepsSlider.noUiSlider.setHandle(handle, this.value);
+                break;
+
+            case 38:
+
+                // Get step to go increase slider value (up)
+                position = step[1];
+
+                // false = no step is set
+                if (position === false) {
+                    position = 1;
+                }
+
+                // null = edge of slider
+                if (position !== null) {
+                    stepsSlider.noUiSlider.setHandle(handle, value + position);
+                }
+
+                break;
+
+            case 40:
+
+                position = step[0];
+
+                if (position === false) {
+                    position = 1;
+                }
+
+                if (position !== null) {
+                    stepsSlider.noUiSlider.setHandle(handle, value - position);
+                }
+
+                break;
+        }
+    });
+});
+</code></pre>		</div>
+
+	</div>
+</section>
+<a href="#section-skipping" id="section-skipping" class="section-link">&sect;</a><h1>Skipping steps</h1>
+
+<section>
+
+	<div class="view">
+		<p>When using a stepped slider, your configuration may require that certain steps aren't available. Using the <code>snap</code> feature, this effect can be created.</p>
+		<p>Notice how <code>40</code> and <code>80</code> can't be selected on the slider.</p>
+
+		<div class="example">
+			<div id="skipstep"></div>
+			<span class="example-val" id="skip-value-lower"></span>
+			<span class="example-val" id="skip-value-upper"></span>
+			
+<script>
+var skipSlider = document.getElementById('skipstep');
+
+noUiSlider.create(skipSlider, {
+    range: {
+        'min': 0,
+        '10%': 10,
+        '20%': 20,
+        '30%': 30,
+        // Nope, 40 is no fun.
+        '50%': 50,
+        '60%': 60,
+        '70%': 70,
+        // I never liked 80.
+        '90%': 90,
+        'max': 100
+    },
+    snap: true,
+    start: [20, 90]
+});
+</script>			
+<script>
+var skipValues = [
+    document.getElementById('skip-value-lower'),
+    document.getElementById('skip-value-upper')
+];
+
+skipSlider.noUiSlider.on('update', function (values, handle) {
+    skipValues[handle].innerHTML = values[handle];
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Initialize a snapping slider</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var skipSlider = document.getElementById('skipstep');
+
+noUiSlider.create(skipSlider, {
+    range: {
+        'min': 0,
+        '10%': 10,
+        '20%': 20,
+        '30%': 30,
+        // Nope, 40 is no fun.
+        '50%': 50,
+        '60%': 60,
+        '70%': 70,
+        // I never liked 80.
+        '90%': 90,
+        'max': 100
+    },
+    snap: true,
+    start: [20, 90]
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Read the slider values</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var skipValues = [
+    document.getElementById('skip-value-lower'),
+    document.getElementById('skip-value-upper')
+];
+
+skipSlider.noUiSlider.on('update', function (values, handle) {
+    skipValues[handle].innerHTML = values[handle];
+});
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-huge-numbers" id="section-huge-numbers" class="section-link">&sect;</a><h1>Using the slider with huge numbers</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>If you are working with arbitrarily large numbers, you should not use these directly in noUiSlider as you'll run into some JavaScript limitations. Instead, you should map your values to an array of string values.</p>
+
+		<p>Numbers is JavaScript are "double precision floats", which can store numbers up to 2^53 <em>(9007199254740992)</em> precisely.</p>
+		
+		<p>For reference, see <a href="http://stackoverflow.com/questions/15529337/prevent-javascript-number-function-from-rounding-big-numbers">this StackOverflow question</a>, or <a href="https://github.com/leongersen/noUiSlider/issues/427">issue #427 filed on GitHub</a>.</p>
+
+		<p>As an example, see the <code>'range'</code> option for a RAM selector offering 14 steps from 512MB to 8GB. The <code>'step'</code> are omitted for clarity. The values are provided as bytes.</p>
+		
+		<p>A better solution would be to abstract the byte values away from the slider, looking up the byte values in an array. This keeps the slider configuration simple and prevents issues with floating point precision.</p>
+
+		<p><em>(These values fit within the limit just fine, but demonstrate the point really well!)</em></p>
+
+		<div class="example">
+			<div id="slider-huge"></div>
+			<span class="example-val" id="huge-value"></span>
+			
+<script>
+var bigValueSlider = document.getElementById('slider-huge');
+var bigValueSpan = document.getElementById('huge-value');
+
+noUiSlider.create(bigValueSlider, {
+    start: 0,
+    step: 1,
+    format: wNumb({
+        decimals: 0
+    }),
+    range: {
+        min: 0,
+        max: 13
+    }
+});
+</script>			
+<script>
+// Note how these are 'string' values, not numbers.
+var range = [
+    '0', '2097152', '4194304',
+    '8388608', '16777216', '33554432',
+    '67108864', '134217728', '268435456',
+    '536870912', '1073741824',
+    '2147483648', '4294967296',
+    '8589934592'
+];
+
+bigValueSlider.noUiSlider.on('update', function (values, handle) {
+    bigValueSpan.innerHTML = range[values[handle]];
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		
+<pre><code>range: {
+	  'min': 0,
+	 '7.6%': 2097152,
+	'15.3%': 4194304,
+	'23.0%': 8388608,
+	'30.7%': 16777216,
+	'38.4%': 33554432,
+	'46.1%': 67108864,
+	'53.8%': 134217728,
+	'61.5%': 268435456,
+	'69.2%': 536870912,
+	'76.9%': 1073741824,
+	'84.6%': 2147483648,
+	'92.3%': 4294967296,
+	  'max': 8589934592
+}
+</code></pre>
+		<div class="viewer-header">Setup</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var bigValueSlider = document.getElementById('slider-huge');
+var bigValueSpan = document.getElementById('huge-value');
+
+noUiSlider.create(bigValueSlider, {
+    start: 0,
+    step: 1,
+    format: wNumb({
+        decimals: 0
+    }),
+    range: {
+        min: 0,
+        max: 13
+    }
+});
+</code></pre>		</div>
+
+		
+<pre><code>// Note how these are 'string' values, not numbers.
+var range = [
+    '0', '2097152', '4194304',
+    '8388608', '16777216', '33554432',
+    '67108864', '134217728', '268435456',
+    '536870912', '1073741824',
+    '2147483648', '4294967296',
+    '8589934592'
+];
+
+bigValueSlider.noUiSlider.on('update', function (values, handle) {
+    bigValueSpan.innerHTML = range[values[handle]];
+});
+</code></pre>
+	</div>
+</section>
+<a href="#section-toggle" id="section-toggle" class="section-link">&sect;</a><h1>Creating a toggle</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>Many application interfaces have options that can be turned on or off using switches. noUiSlider is well suited for this, especially because of the wide touch support.</p>
+
+		<p>The <code>update</code> event can be used to keep track of changes to the handle. We'll set the range to <code>[0, 1]</code>, which leaves one step of <code>1</code>.</p>
+
+		<div class="example vertical">
+			<div id="slider-toggle"></div>
+			
+<script>
+var toggleSlider = document.getElementById('slider-toggle');
+
+noUiSlider.create(toggleSlider, {
+    orientation: "vertical",
+    start: 0,
+    range: {
+        'min': [0, 1],
+        'max': 1
+    },
+    format: wNumb({
+        decimals: 0
+    })
+});
+
+toggleSlider.noUiSlider.on('update', function (values, handle) {
+    if (values[handle] === '1') {
+        toggleSlider.classList.add('off');
+    } else {
+        toggleSlider.classList.remove('off');
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Toggle</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var toggleSlider = document.getElementById('slider-toggle');
+
+noUiSlider.create(toggleSlider, {
+    orientation: "vertical",
+    start: 0,
+    range: {
+        'min': [0, 1],
+        'max': 1
+    },
+    format: wNumb({
+        decimals: 0
+    })
+});
+
+toggleSlider.noUiSlider.on('update', function (values, handle) {
+    if (values[handle] === '1') {
+        toggleSlider.classList.add('off');
+    } else {
+        toggleSlider.classList.remove('off');
+    }
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">CSS</div>
+
+		<div class="viewer-content">
+			
+<style>#slider-toggle {
+	height: 50px;
+}
+#slider-toggle.off .noUi-handle {
+	border-color: red;
+}
+</style><pre class="language-css"><code>#slider-toggle {
+	height: 50px;
+}
+#slider-toggle.off .noUi-handle {
+	border-color: red;
+}
+</code></pre>		</div>
+
+	</div>
+</section>
+<a href="#section-soft-limits" id="section-soft-limits" class="section-link">&sect;</a><h1>Soft limits</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>If you want to disable the edges of a slider, the set event can be used to reset the value if a limit is passed. Note how the handle 'bounces back' when it is released below <code>20</code> or above <code>80</code>. noUiSlider also supports disabling edges altogether, which can be done using the <a href="/nouislider/slider-options/#section-padding">padding option</a>.</p>
+
+		<div class="example">
+			<div id="soft"></div>
+			
+<script>
+var softSlider = document.getElementById('soft');
+
+noUiSlider.create(softSlider, {
+    start: 50,
+    range: {
+        min: 0,
+        max: 100
+    },
+    pips: {
+        mode: 'values',
+        values: [20, 80],
+        density: 4
+    }
+});
+</script>			
+<script>
+softSlider.noUiSlider.on('change', function (values, handle) {
+    if (values[handle] < 20) {
+        softSlider.noUiSlider.set(20);
+    } else if (values[handle] > 80) {
+        softSlider.noUiSlider.set(80);
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Setting up the slider</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var softSlider = document.getElementById('soft');
+
+noUiSlider.create(softSlider, {
+    start: 50,
+    range: {
+        min: 0,
+        max: 100
+    },
+    pips: {
+        mode: 'values',
+        values: [20, 80],
+        density: 4
+    }
+});
+</code></pre>		</div>
+
+		<div class="viewer-header">Resetting using the <code>change</code> event</div>
+
+		<div class="viewer-content">
+			
+<pre><code>softSlider.noUiSlider.on('change', function (values, handle) {
+    if (values[handle] < 20) {
+        softSlider.noUiSlider.set(20);
+    } else if (values[handle] > 80) {
+        softSlider.noUiSlider.set(80);
+    }
+});
+</code></pre>		</div>
+	</div>
+</section>
+<a href="#section-from-center" id="section-from-center" class="section-link">&sect;</a><h1>Slider with connect from the center</h1>
+
+<section>
+
+    <div class="view">
+
+        <p><a href="https://github.com/leongersen/noUiSlider/issues/371">Issue #371</a> requested a slider with the connect option originating from the slider center.</p>
+
+        <p>An example of how to implement this is <a href="https://jsfiddle.net/leongersen/9hyfv0bw/11/">available as a JSFiddle</a>.</p>
+
+    </div>
+
+    <div class="side">
+    </div>
+</section>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>

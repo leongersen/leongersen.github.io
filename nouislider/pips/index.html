@@ -1,0 +1,566 @@
+---
+permalink: https://refreshless.com/nouislider/pips/
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+
+    <title>noUiSlider - Handles and Slider Values | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="https://refreshless.com/nouislider/pips/">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<h1>Adding a scale/pips to a slider</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>This feature allows you to generate points along the slider.</p>
+		<p>Five options can be set: <code>mode</code> to determine where to place pips, <code>values</code> as additional options for <code>mode</code>, <code>stepped</code> to round pip values to the slider stepping, <code>density</code> to pre-scale the number of pips, and <code>filter</code> to manually modify pip size.</p>
+
+		<p>The <code>density</code> value controls how many pips are placed on one percent of the slider range. With the default value of <code>1</code>, there is one pip per percent. For a value of <code>2</code>, a pip is placed for every 2 percent. A value below one will place more than one pip per percentage.</p>
+
+		<p>All sliders on the page use the same range, as displayed to the right.</p>
+
+	</div>
+
+	<div class="side">
+
+		
+<script>
+var range_all_sliders = {
+	'min': [     0 ],
+	'10%': [   500,  500 ],
+	'50%': [  4000, 1000 ],
+	'max': [ 10000 ]
+};
+</script>		
+<pre><code>var range_all_sliders = {
+	'min': [     0 ],
+	'10%': [   500,  500 ],
+	'50%': [  4000, 1000 ],
+	'max': [ 10000 ]
+};
+</code></pre>	</div>
+</section>
+
+
+<h2>API exposure</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>The pips feature is also exposed in the public API. This could be useful to update or remove pips after slider creation.</p>
+
+	</div>
+
+	<div class="side">
+
+		
+<pre><code>slider.noUiSlider.pips(/* options */);
+
+// Find the current set of pips.
+slider.querySelector('.noUi-pips');
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-range" id="section-range" class="section-link">&sect;</a><h2>Range</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>The <code>range</code> mode uses the slider range to determine where the pips should be. A pip is generated for every percentage specified.</p>
+
+		<h4 class="before-example">Left-to-Right (default):</h4>
+
+		<div class="example">
+			<div class="pips-range" id="pips-range"></div>
+		</div>
+
+		<h4 class="before-example">Right-to-Left:</h4>
+
+		<div class="example">
+			<div class="pips-range" id="pips-range-rtl"></div>
+		</div>
+
+		<h4 class="before-example">Vertical and vertical, bottom-to-top:</h4>
+
+		<div class="example vertical" style="width: 150px; float: left">
+			<div class="pips-range" id="pips-range-vertical"></div>
+		</div>
+
+		<div class="example vertical" style="width: 150px">
+			<div class="pips-range" id="pips-range-vertical-rtl"></div>
+		</div>
+
+		
+<script>
+var pipsRange = document.getElementById('pips-range');
+var pipsRangeRtl = document.getElementById('pips-range-rtl');
+var pipsRangeVertical = document.getElementById('pips-range-vertical');
+var pipsRangeVerticalRtl = document.getElementById('pips-range-vertical-rtl');
+
+noUiSlider.create(pipsRange, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeRtl, {
+    range: range_all_sliders,
+    start: 0,
+    direction: 'rtl',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeVertical, {
+    range: range_all_sliders,
+    start: 0,
+    orientation: 'vertical',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeVerticalRtl, {
+    range: range_all_sliders,
+    start: 0,
+    orientation: 'vertical',
+    direction: 'rtl',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+</script>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var pipsRange = document.getElementById('pips-range');
+var pipsRangeRtl = document.getElementById('pips-range-rtl');
+var pipsRangeVertical = document.getElementById('pips-range-vertical');
+var pipsRangeVerticalRtl = document.getElementById('pips-range-vertical-rtl');
+
+noUiSlider.create(pipsRange, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeRtl, {
+    range: range_all_sliders,
+    start: 0,
+    direction: 'rtl',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeVertical, {
+    range: range_all_sliders,
+    start: 0,
+    orientation: 'vertical',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+
+noUiSlider.create(pipsRangeVerticalRtl, {
+    range: range_all_sliders,
+    start: 0,
+    orientation: 'vertical',
+    direction: 'rtl',
+    pips: {
+        mode: 'range',
+        density: 3
+    }
+});
+</code></pre>	</div>
+
+</section>
+
+
+<a href="#section-steps" id="section-steps" class="section-link">&sect;</a><h2>Steps</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>Like <code>range</code>, the <code>steps</code> mode uses the slider range. In <code>steps</code> mode, a pip is generated for every step. The <code>filter</code> option can be used to filter the generated pips.</p>
+
+        <p>The <code>filter</code> function must return:</p>
+        <ul>
+            <li><code>-1</code> (no pip at all)</li>
+            <li><code>0</code> (no value)</li>
+            <li><code>1</code> (large value)</li>
+            <li><code>2</code> (small value)</li>
+        </ul>
+
+        <br>
+
+        <p>Arguments to the <code>filter</code> function are the value (<code>number</code>) and the type (<code>0</code>, <code>1</code> or <code>2</code> like above).</p>
+
+		<p>Here, we'll use large values for every step matching a thousand (<code>1000</code>, <code>2000</code>, <code>3000</code>), and small values for every step matching 500 (<code>2500</code>, <code>3500</code>, <code>4500</code>).</p>
+
+		<p>The Pips add-on supports <code>format</code> in the same way the slider itself does.</p>
+
+        <p>Pips are written as HTML. If you are using user-supplied values in the format option, you may want to escape them.</p>
+
+	</div>
+
+	<div class="side">
+		
+<pre><code>function filterPips(value, type) {
+    if (type === 0) {
+        return value < 2000 ? -1 : 0;
+    }
+    return value % 1000 ? 2 : 1;
+}
+
+var pipsSteps = document.getElementById('pips-steps');
+
+noUiSlider.create(pipsSteps, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'steps',
+        density: 3,
+        filter: filterPips,
+        format: wNumb({
+            decimals: 2,
+            prefix: '&euro;'
+        })
+    }
+});
+</code></pre>	</div>
+
+</section>
+
+<section>
+
+	<h4 class="before-example">Slider with filtered steps:</h4>
+
+	<div class="example">
+		<div id="pips-steps"></div>
+		
+<script>
+function filterPips(value, type) {
+    if (type === 0) {
+        return value < 2000 ? -1 : 0;
+    }
+    return value % 1000 ? 2 : 1;
+}
+
+var pipsSteps = document.getElementById('pips-steps');
+
+noUiSlider.create(pipsSteps, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'steps',
+        density: 3,
+        filter: filterPips,
+        format: wNumb({
+            decimals: 2,
+            prefix: '&euro;'
+        })
+    }
+});
+</script>	</div>
+
+</section>
+
+
+<a href="#section-positions" id="section-positions" class="section-link">&sect;</a><h2>Positions</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>In <code>positions</code> mode, pips are generated at percentage-based positions on the slider. Optionally, the <code>stepped</code> option can be set to <code>true</code> to match the pips to the slider steps.</p>
+
+		<div class="example">
+			<div id="pips-positions"></div>
+			
+<script>
+var pipsPositions = document.getElementById('pips-positions');
+
+noUiSlider.create(pipsPositions, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 4
+    }
+});
+</script>		</div>
+
+		<h4 class="before-example">Stepped positions:</h4>
+
+		<div class="example">
+			<div id="pips-positions-stepped"></div>
+			
+<script>
+var positionsStepped = document.getElementById('pips-positions-stepped');
+
+noUiSlider.create(positionsStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 4,
+        stepped: true
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var pipsPositions = document.getElementById('pips-positions');
+
+noUiSlider.create(pipsPositions, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 4
+    }
+});
+</code></pre>		
+<pre><code>var positionsStepped = document.getElementById('pips-positions-stepped');
+
+noUiSlider.create(positionsStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'positions',
+        values: [0, 25, 50, 75, 100],
+        density: 4,
+        stepped: true
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-count" id="section-count" class="section-link">&sect;</a><h2>Count</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>The <code>count</code> mode can be used to generate a fixed number of pips. As with <code>positions</code> mode, the <code>stepped</code> option can be used.</p>
+
+		<div class="example">
+			<div id="pips-count"></div>
+			
+<script>
+var pipsCount = document.getElementById('pips-count');
+
+noUiSlider.create(pipsCount, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'count',
+        values: 6,
+        density: 4
+    }
+});
+</script>		</div>
+
+		<h4 class="before-example">Stepped count:</h4>
+
+		<div class="example">
+			<div id="pips-count-stepped"></div>
+			
+<script>
+var pipsCountStepped = document.getElementById('pips-count-stepped');
+
+noUiSlider.create(pipsCountStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'count',
+        values: 6,
+        density: 4,
+        stepped: true
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var pipsCount = document.getElementById('pips-count');
+
+noUiSlider.create(pipsCount, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'count',
+        values: 6,
+        density: 4
+    }
+});
+</code></pre>		
+<pre><code>var pipsCountStepped = document.getElementById('pips-count-stepped');
+
+noUiSlider.create(pipsCountStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'count',
+        values: 6,
+        density: 4,
+        stepped: true
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-values" id="section-values" class="section-link">&sect;</a><h2>Values</h2>
+
+<section>
+
+	<div class="view">
+
+		<p>The <code>values</code> mode is similar to <code>positions</code>, but it accepts values instead of percentages. The <code>stepped</code> option can be used for this mode.</p>
+
+		<div class="example">
+			<div id="pips-values"></div>
+			
+<script>
+var pipsValues = document.getElementById('pips-values');
+
+noUiSlider.create(pipsValues, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'values',
+        values: [50, 552, 2251, 3200, 5000, 7080, 9000],
+        density: 4
+    }
+});
+</script>		</div>
+
+		<h4 class="before-example">Stepped values:</h4>
+		<p>Note how overlapping pips are merged with the <code>stepped</code> option set.</p>
+
+		<div class="example">
+			<div id="pips-values-stepped"></div>
+			
+<script>
+var pipsValuesStepped = document.getElementById('pips-values-stepped');
+
+noUiSlider.create(pipsValuesStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'values',
+        values: [50, 552, 4651, 4952, 5000, 7080, 9000],
+        density: 4,
+        stepped: true
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var pipsValues = document.getElementById('pips-values');
+
+noUiSlider.create(pipsValues, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'values',
+        values: [50, 552, 2251, 3200, 5000, 7080, 9000],
+        density: 4
+    }
+});
+</code></pre>		
+<pre><code>var pipsValuesStepped = document.getElementById('pips-values-stepped');
+
+noUiSlider.create(pipsValuesStepped, {
+    range: range_all_sliders,
+    start: 0,
+    pips: {
+        mode: 'values',
+        values: [50, 552, 4651, 4952, 5000, 7080, 9000],
+        density: 4,
+        stepped: true
+    }
+});
+</code></pre>	</div>
+</section>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>

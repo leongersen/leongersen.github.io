@@ -1,0 +1,159 @@
+---
+permalink: 
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+
+    <title>noUiSlider - Configurations | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<style>
+
+    .configuration {
+        margin: 50px;
+        width: 300px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    .vertical {
+        height: 300px;
+        display: inline-block;
+    }
+
+    .vertical .noUi-target {
+        height: 100%;
+    }
+
+</style>
+
+<input placeholder="Test for focus">
+
+<div class="configuration">
+    <h2>Horizontal - LTR</h2>
+    <div id="horizontal-ltr"></div>
+</div>
+<div class="configuration">
+    <h2>Horizontal - RTL</h2>
+    <div id="horizontal-rtl"></div>
+</div>
+<div class="configuration vertical">
+    <h2>Vertical - LTR</h2>
+    <div id="vertical-ltr"></div>
+</div>
+<div class="configuration vertical">
+    <h2>Vertical - RTL</h2>
+    <div id="vertical-rtl"></div>
+</div>
+
+
+<script>
+var slider = document.getElementById('horizontal-ltr');
+
+noUiSlider.create(slider, {
+    start: [20, 80],
+    connect: true,
+    direction: "ltr",
+    orientation: "horizontal",
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>
+<script>
+var slider = document.getElementById('horizontal-rtl');
+
+noUiSlider.create(slider, {
+    start: [20, 80],
+    connect: true,
+    direction: "rtl",
+    orientation: "horizontal",
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>
+<script>
+var slider = document.getElementById('vertical-ltr');
+
+noUiSlider.create(slider, {
+    start: [20, 80],
+    connect: true,
+    direction: "ltr",
+    orientation: "vertical",
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>
+<script>
+var slider = document.getElementById('vertical-rtl');
+
+noUiSlider.create(slider, {
+    start: [20, 80],
+    connect: true,
+    direction: "rtl",
+    orientation: "vertical",
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>

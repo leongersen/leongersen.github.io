@@ -1,0 +1,465 @@
+---
+permalink: https://refreshless.com/nouislider/behaviour-option/
+---
+<!DOCTYPE html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="noUiSlider supports a ton of features, such as dragging the range, or setting fixed handle distances.">
+
+    <title>noUiSlider - User Interaction Settings | Refreshless.com</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
+    <script src="/nouislider/documentation/assets/wNumb.js"></script>
+
+    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+
+    <link rel="canonical" href="https://refreshless.com/nouislider/behaviour-option/">
+
+</head>
+
+<body class="language-javascript">
+
+
+<div class="bar-group">
+    <a class="bar-link project" href="/nouislider/">noUiSlider</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/slider-options/">Options</a>
+    <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
+    <a class="bar-link" href="/nouislider/examples/">Examples</a>
+    <a class="bar-link" href="/nouislider/events-callbacks/">Events</a>
+    <a class="bar-link" href="/nouislider/pips/">Scale/Pips</a>
+    <a class="bar-link" href="/nouislider/more/">Updating, Disabling &amp; Styling</a>
+    <a class="bar-link download" href="/nouislider/download/">Download</a>
+</div>
+
+<div class="content">
+    
+<h1>Slider behaviour</h1>
+
+<section>
+
+	<div class="view">
+
+		<p>noUiSlider offers several ways to handle user interaction. The range can be set to drag, and handles can move to taps. All these effects are optional, and can be enable by adding their keyword to the <code>behaviour</code> option.</p>
+
+		<p>This option accepts a <code>"-"</code> separated list of <code>"drag"</code>, <code>"tap"</code>, <code>"fixed"</code>, <code>"snap"</code>, <code>"unconstrained"</code> or <code>"none"</code>.</p>
+
+		<div class="example">
+			<div id="behaviour"></div>
+			
+<script>
+var behaviourSlider = document.getElementById('behaviour');
+
+noUiSlider.create(behaviourSlider, {
+    start: [20, 40],
+    step: 10,
+    behaviour: 'drag',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var behaviourSlider = document.getElementById('behaviour');
+
+noUiSlider.create(behaviourSlider, {
+    start: [20, 40],
+    step: 10,
+    behaviour: 'drag',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-examples" id="section-examples" class="section-link">&sect;</a><h2>Example configurations</h2>
+
+<section>
+
+	<div class="double">
+
+		<pre><code>behaviour: "drag"</code></pre>
+		<p>Make the <strong>range</strong> draggable. <strong>Handles</strong> are <em>always</em> draggable.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "drag-fixed"</code></pre>
+		<p>The range is draggable. The range width can't be changed, so dragging one handle will move the other, too.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "tap"</code></pre>
+		<p>Make the closest handle when the slider gets tapped.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "tap-drag"</code></pre>
+		<p>Make the closest handle jump when the slider bar is tapped, make the range draggable.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "hover"</code></pre>
+		<p>Fire <code>hover</code> events when a user with a mouse or pen hovers over the slider.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "unconstrained-tap"</code></pre>
+		<p>Allow handles to move past each other.</p>
+	</div>
+
+	<div class="double">
+
+		<pre><code>behaviour: "none"</code></pre>
+		<p>Turn off all behaviour, except for standard moving.</p>
+	</div>
+</section>
+
+
+<a href="#section-tap" id="section-tap" class="section-link">&sect;</a><h2>Tap</h2>
+
+<section>
+
+	<div class="view">
+		<p>A handle snaps to a clicked location. A smooth transition is used. This option is <strong>default</strong>.</p>
+		<div class="example">
+			<div id="tap"></div>
+			
+<script>
+var tapSlider = document.getElementById('tap');
+
+noUiSlider.create(tapSlider, {
+    start: 40,
+    behaviour: 'tap',
+    connect: [false, true],
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var tapSlider = document.getElementById('tap');
+
+noUiSlider.create(tapSlider, {
+    start: 40,
+    behaviour: 'tap',
+    connect: [false, true],
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-drag" id="section-drag" class="section-link">&sect;</a><h2>Drag</h2>
+
+<section>
+
+	<div class="view">
+		<p>Makes the range (the green connecting bar between handles) draggable. Requires two handles. The <code>connect</code> option <strong>must</strong> be set to <code>true</code>. The <code>slide</code> event fires for both handles when dragging the range.</p>
+		<div class="example">
+			<div id="drag"></div>
+			
+<script>
+var dragSlider = document.getElementById('drag');
+
+noUiSlider.create(dragSlider, {
+    start: [40, 60],
+    behaviour: 'drag',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var dragSlider = document.getElementById('drag');
+
+noUiSlider.create(dragSlider, {
+    start: [40, 60],
+    behaviour: 'drag',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-fixed" id="section-fixed" class="section-link">&sect;</a><h2>Fixed dragging</h2>
+
+<section>
+
+	<div class="view">
+		<p>Keeps the distance between handles fixed when the <code>'drag'</code> flag is set.</p>
+		<div class="example">
+			<div id="drag-fixed"></div>
+			
+<script>
+var dragFixedSlider = document.getElementById('drag-fixed');
+
+noUiSlider.create(dragFixedSlider, {
+    start: [40, 60],
+    behaviour: 'drag-fixed',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var dragFixedSlider = document.getElementById('drag-fixed');
+
+noUiSlider.create(dragFixedSlider, {
+    start: [40, 60],
+    behaviour: 'drag-fixed',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-snap" id="section-snap" class="section-link">&sect;</a><h2>Snap</h2>
+
+<section>
+
+	<div class="view">
+		<p>A handle snaps to a clicked location. It can immediatly be moved, without a <code>mouseup</code> + <code>mousedown</code>.</p>
+		<div class="example">
+			<div id="snap"></div>
+			
+<script>
+var snapSlider = document.getElementById('snap');
+
+noUiSlider.create(snapSlider, {
+    start: 40,
+    behaviour: 'snap',
+    connect: [true, false],
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var snapSlider = document.getElementById('snap');
+
+noUiSlider.create(snapSlider, {
+    start: 40,
+    behaviour: 'snap',
+    connect: [true, false],
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-hover" id="section-hover" class="section-link">&sect;</a><h2>Hover</h2>
+
+<section>
+
+	<div class="view">
+		<p>With this option set, the slider fires <code>hover</code> events when a mouse or pen user hovers over the slider. The event is provided with the slider value at the hovered position. It <strong>does not</strong> fire while the slider is being dragged by mouse or pen, but it <strong>does</strong> for touch events.</p>
+		<div class="example">
+			<div id="hover"></div>
+			<span class="example-val" id="hover-val"></span>
+			<style>#hover-val:before { content: "Hovered value: " }</style>
+			
+<script>
+var hoverSlider = document.getElementById('hover');
+var field = document.getElementById('hover-val');
+
+noUiSlider.create(hoverSlider, {
+    start: 20,
+    behaviour: 'hover-snap',
+    direction: 'rtl',
+    range: {
+        'min': 0,
+        'max': 10
+    }
+});
+
+hoverSlider.noUiSlider.on('hover', function (value) {
+    field.innerHTML = value;
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var hoverSlider = document.getElementById('hover');
+var field = document.getElementById('hover-val');
+
+noUiSlider.create(hoverSlider, {
+    start: 20,
+    behaviour: 'hover-snap',
+    direction: 'rtl',
+    range: {
+        'min': 0,
+        'max': 10
+    }
+});
+
+hoverSlider.noUiSlider.on('hover', function (value) {
+    field.innerHTML = value;
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-unconstrained" id="section-unconstrained" class="section-link">&sect;</a><h2>Unconstrained</h2>
+
+<section>
+
+	<div class="view">
+		<p>With this option set, handles are allowed to move past each other. The <code>limit</code> and <code>margin</code> options cannot be used with this behaviour.</p>
+        <p>All APIs will return slider values in the original handle order, regardless of whether handles have changed places.</p>
+		<div class="example">
+			<div id="unconstrained"></div>
+            <span class="example-val" id="unconstrained-values"></span>
+			
+<script>
+var unconstrainedSlider = document.getElementById('unconstrained');
+var unconstrainedValues = document.getElementById('unconstrained-values');
+
+noUiSlider.create(unconstrainedSlider, {
+    start: [20, 50, 80],
+    behaviour: 'unconstrained-tap',
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+unconstrainedSlider.noUiSlider.on('update', function (values) {
+    unconstrainedValues.innerHTML = values.join(' :: ');
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var unconstrainedSlider = document.getElementById('unconstrained');
+var unconstrainedValues = document.getElementById('unconstrained-values');
+
+noUiSlider.create(unconstrainedSlider, {
+    start: [20, 50, 80],
+    behaviour: 'unconstrained-tap',
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+unconstrainedSlider.noUiSlider.on('update', function (values) {
+    unconstrainedValues.innerHTML = values.join(' :: ');
+});
+</code></pre>	</div>
+</section>
+
+
+<a href="#section-combined" id="section-combined" class="section-link">&sect;</a><h2>Combined options</h2>
+
+<section>
+
+	<div class="view">
+		<p>Most <code>'behaviour'</code> flags can be combined.</p>
+		<div class="example">
+			<div id="combined"></div>
+			
+<script>
+var dragTapSlider = document.getElementById('combined');
+
+noUiSlider.create(dragTapSlider, {
+    start: [40, 60],
+    behaviour: 'drag-tap',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var dragTapSlider = document.getElementById('combined');
+
+noUiSlider.create(dragTapSlider, {
+    start: [40, 60],
+    behaviour: 'drag-tap',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 80
+    }
+});
+</code></pre>	</div>
+</section>
+</div>
+
+<script>
+
+    var headers = document.getElementsByClassName('viewer-header');
+
+    for (var i = 0; i < headers.length; i++) {
+        headers[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+    }
+
+</script>
+
+<script src="/nouislider/documentation/assets/prism.js"></script>
+
+
+</body>
