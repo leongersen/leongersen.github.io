@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+	<head>
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="Group by date proximity in Solr using the eDisMax function. Displaying flexible day-to-day pricing.">
+
+		<meta property="fb:admins" content="leongersen">
+		<meta property="og:title" content="Apache Solr - Group by date proximity">
+		<meta property="og:url" content="https://refreshless.com/blog/solr-group-date-proximity-edismax">
+		<meta property="og:description" content="Group by date proximity in Solr using the eDisMax function. Displaying flexible day-to-day pricing.">
+		
+		<link rel="canonical" href="http://refreshless.com/blog/solr-group-date-proximity-edismax">
+
+		<title>Apache Solr - Group by date proximity | Refreshless.com</title>
+
+		<link rel="canonical" href="http://refreshless.com/blog/solr-group-date-proximity-edismax">
+
+		<link href="/blog/style.css?d=27" rel="stylesheet">
+
+	</head>
+
+	<div class="container">
+
+		<div class="content" id="content">
+			<h1>Apache Solr - Group by date proximity</h1>
+<div class="posted inline">Posted April 27, 2016	<a class="more-link link" href="/blog/">« More articles</a></div>
+
+<p>The company I currently work for sells camping vacations. In the travel business, it is usual to have set days for arrival and departure, usually saturdary.</p>
+
+<p>We've opted for another model, allowing customers to select their prefered days of arrival and departure, as long as they fit within the planning (so not leaving any one-night gaps). All our availability is indexed in a Solr document database.</p>
+
+<p>The relevant part of our schema looks like this:</p>
+
+<pre></code>/var/solr/data/instance/conf/schema.xml
+
+&lt;field name="unit_type_id" type="int"/&gt;
+&lt;field name="arrival_date" type="tdate"/&gt;
+&lt;field name="departure_date" type="tdate"/&gt;
+&lt;field name="nights" type="int" /&gt;
+&lt;field name="price" type="double" /&gt;
+</code></pre>
+
+
+<h2>Current implementation and issues</h2>
+
+<p>Next to that grid, our site has several search features and widgets, allowing for a more commercially attractive display of prices. These widgets allow search for a specific date. To show alternative results if we don't have the exact match, our site provides an options to search a couple days flexible. This is done by searching around the requested date, like so:</p>
+
+<pre><code>arrival_date:[<date>-3DAYS TO <date>+3DAYS]</code></pre>
+
+<p>We then group the results by <code>'unit_type_id'</code> for display. Our current search has had this implementation for a while, but it always bugged my because if has one massive <strong>drawback</strong>: if there is a match in the 3 days prior to the requested date, that is the one displayed, even if the requested date <em>is</em> available.</p>
+
+<p>I started looking for a way to display more relevant results, and dove into the Apache Solr documentation. I was kickedstarted by asking a <a href="http://stackoverflow.com/questions/36236610/solr-sort-within-group-by-proximity/36263205">StackOverflow question</a>, which pointed me to the <code>boost</code> feature.</p>
+
+<p>Here are some other good articles that helped me along:</p>
+
+<ul>
+	<li>Working with <a href="https://cwiki.apache.org/confluence/display/solr/Working+with+Dates">dates</a></li>
+	<li>The <a href="https://cwiki.apache.org/confluence/display/solr/The+Extended+DisMax+Query+Parser">extended dismax query</a> parser</li>
+	<li>On using the <a href="http://wiki.apache.org/solr/SolrRelevancyFAQ#How_can_I_boost_the_score_of_newer_documents">boost feature with dates</a></li>
+</ul>
+
+<h2>Using Boost to group dates by proximity and relevancy</h2>
+
+<p>To use the boost feature to group by date proximity, we'll use the <code>defType</code> and <code>boost</code> fields. In the boost function, we'll use <a href="https://wiki.apache.org/solr/FunctionQuery#recip">recip</a> and <a href="https://wiki.apache.org/solr/FunctionQuery#ms">ms</a> on the <code>arrival_date</code></a>, which allows us to way the results. There is a really nice explaination of the <a href="http://stackoverflow.com/questions/22017616/stronger-boosting-by-date-in-solr">recip function on StackOverflow</a>.</p>
+
+<p><code>recip</code>, short for <em>'reciprocal function'</em>, takes four arguments: (x,m,a,b), performing the calculation: a/(m*x+b). m, a &amp; b are constants, x is any (numeric) field or the result of another function.</p>
+
+<p>Because we want to use the boost feature to <em>order</em> the search results, we can pick 1 for <code>m</code>, <code>a</code> and <code>b</code>. An example:</p>
+
+<pre><code>recip(abs(sub(nights,' . $nights . ')),1,1,1)</code></pre>
+
+<p>Important gotcha: use the <code>q.alt</code> field, not <code>q</code> to find the desired results.</p>
+
+
+<p>You can try the full search feature using the filtering described on <a href="https://www.vialora.nl/zoeken">ViaLora.nl</a> or the campsite-level filter on <a href="https://www.rent-a-tent.nl/frankrijk/ardeche/camping/les-charmilles">Rent-a-Tent.nl</a>, which run on the same platform.</p>
+
+<p>Url-decoded and indented (for legibility) the full url becomes:</p>
+
+<pre><code>https://HOST:PORT/solr/base/select
+?df=
+	unit_type_id,
+	arrival_date
+&defType=
+	edismax
+&q.alt=
+	unit_type_id: 155
+	AND
+	arrival_date:[2016-06-06T00:00:00Z/DAY-3DAYS TO 2016-06-06T00:00:00Z/DAY+3DAYS]
+&boost=
+	recip(ms(arrival_date,2016-06-06T00:00:00Z),1,1,1)
+&group=
+	true
+&group.field=
+	unit_type_id
+&wt=
+	json
+&indent=
+	true</code></pre>
+
+<h2>P.s. PHP Solarium &amp; Debugging</h2>
+
+<p>In our project, we're using Solarium PHP, which can be hard to debug. Debugging the query Solarium constructs can be tricky, and I haven't found a way to output it. This can be circumvented by <code>var_dump</code>-ing it in the <code>Curl Adapter</code> <em>(<a href="https://github.com/solariumphp/solarium/blob/master/library/Solarium/Core/Client/Adapter/Curl.php#L112">this line</a>)</em>.</p>
+
+
+<h2>P.p.s. Flexible pricing grid</h2>
+
+<p>We provide full transparancy about our pricing and availability, allowing users to browse a price grid that can be searched. After some <a href="http://ux.stackexchange.com/questions/33404/displaying-varying-prices">struggles to find a workable design</a>, we settled on <a href="https://www.rent-a-tent.nl/prijzen/169">a two-axis grid controlled by a date-picker</a>, containing all prices. This data is fed directly from Solr.</p>
+
+<hr class="end">
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="LeonGersen" data-size="large" data-count="none">Tweet</a>
+
+<div class="comments">
+	<div class="fb-comments" data-href="http://refreshless.com/blog/solr-group-date-proximity-edismax" data-width="100%" data-colorscheme="light"></div>
+	<div id="fb-root"></div>
+</div>
+
+<script async src="//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0"></script>
+<script async src="//platform.twitter.com/widgets.js"></script>
+		</div>
+	</div>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+	<head>
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="Working with QNX Neutrino on the Beaglebone Black requires changing the makefile in the BSP.">
+
+		<meta property="fb:admins" content="leongersen">
+		<meta property="og:title" content="QNX Neutrino 6.6 on the Beaglebone Black">
+		<meta property="og:url" content="https://refreshless.com/blog/qnx-6.6-on-the-beaglebone-black">
+		<meta property="og:description" content="Working with QNX Neutrino on the Beaglebone Black requires changing the makefile in the BSP.">
+		
+		<link rel="canonical" href="http://refreshless.com/blog/qnx-6.6-on-the-beaglebone-black">
+
+		<title>QNX Neutrino 6.6 on the Beaglebone Black | Refreshless.com</title>
+
+		<link rel="canonical" href="http://refreshless.com/blog/qnx-6.6-on-the-beaglebone-black">
+
+		<link href="/blog/style.css?d=27" rel="stylesheet">
+
+	</head>
+
+	<div class="container">
+
+		<div class="content" id="content">
+			<h1>QNX Neutrino 6.6 on the Beaglebone Black</h1>
+<div class="posted inline">Posted May 15th, 2014	<a class="more-link link" href="/blog/">« More articles</a></div>
+
+<h2>Some background</h2>
+
+<p>I'm currently attending college - <em>Embedded systems engineering</em>. We (a group of 4 students) primarily work on ~ 6 month projects, were we'll have to develop a project according to some specification. This time arround, we are building a <em>swarm</em> of boats, communicating through a wireless network. Additional requirement: use an RTOS.</p>
+
+<p>Due to time constraints, we'll be using an existing hardware platform, not start from scratch with a custom PCB.<p>
+
+<p>After some research, we settled on a combination of the Beaglebone Black and the QNX Neutrino RTOS. Documentation on Neutrino seems expansive, and an aceemic licensing model is available, so we where good to go.</p>
+
+<p>QNX provides BSP's - <strong>B</strong>oard <strong>S</strong>upport <strong>P</strong>ackages - to make it easy to get started with the OS. These packages contain drivers and startup code for a ton of devices and platforms. The <a href="http://community.qnx.com/sf/wiki/do/viewPage/projects.bsp/wiki/TiAm335Beaglebone">package for the Beaglebone Black</a> was recently updated to the latest Neutrino 6.6.</p>
+
+<h2>Getting started</h2>
+
+<p>The user guide that comes with the BSP is fairly comprehensive, and getting it up and running on the BeagleBone black was relatively straightforward. We took the recommendation of using the Momentics IDE, developed on top of Eclipse and provided by QNX. Suprisingly simple, the BSP can be imported straight from the <em>.zip</em> file. Just <a href="http://www.qnx.com/developers/docs/660/index.jsp?topic=%2Fcom.qnx.doc.neutrino.building%2Ftopic%2Fbsp.html">follow the instructions</a> to get the basics working.</p>
+
+<h2>Radio silence...</h2>
+
+<p>No, really. This is were the documentation lets you go. There are some 'hello world' examples, which are easily understood, but from there on it focusses on specific API's and modules, not on gradual progress. Some extensive Googling yielded almost no helpful results, which is why I figured the details might help someone.</p>
+
+<h2>The build</h2>
+
+<p>With the project open in the IDE, there is one file you'll need to modify to get the OS to your liking.</p>
+
+<pre></code>src\hardware\startup\boards\ti-am335x\beaglebone\build</code></pre>
+
+<p>There are several more <em>*.build</em> files, you <strong>do not want those</strong>. The <code>prebuilt</code> folder also has a build file, which we started with. This file is the one that is originally used, but you <strong>cannot</strong> change the BSP source and use the prebuilt files. More details in a bit.</p>
+
+<h2>Changing the source</h2>
+
+<p>As you may know, the BeagleBone has several uses for the headers, and you'll need to configure them to get the functionality you want. On Linux platforms, you'd be using <em>device tree</em> files, but the process is slightly different in Neutrino.</p> 
+
+<p>Pinmuxing, as the process of configuring the pins is called, can be done in the following file:</p>
+
+<pre></code>src\hardware\startup\boards\ti-am335x\beaglebone\init_pinmux.c</code></pre>
+
+<p>Go ahead, change the file. Won't help. It took us several days to figure out why.</p>
+
+<h2>Building <code>\src</code> changes</h2>
+
+<p>It took us a while to figure this out, but the files in the <code>install</code> folder will be overwritten by the build process. From the QNX documentation:</p>
+
+<blockquote><pre>install
+	Invokes the prebuilt target, and then performs the 
+	following in the src directory:
+		make <strong>hinstall</strong> to copy all public 
+		  headers from src into the install directory.
+		make <strong>install</strong> to build all binaries
+		  in src and copy the results into the install directory.
+		  This target also copies the buildfile 
+		  from src/hardware/startup/boards/board/build and
+		  renames it board.build.</pre>
+<cite>QNX Software systems - <a href="http://www.qnx.com/developers/docs/660/index.jsp?topic=%2Fcom.qnx.doc.neutrino.building%2Ftopic%2Fbsp_BUILDSRC.html&cp=3_0_1_1_1_1">Building source from the command line</a></cite>
+</blockquote>
+
+<p>If you go through the results in the Momentics build console, you'll find several mentions of the <em>hinstall</em> command. Thus, to get the build process to use the actual code from the <code>\src</code> folder, we needed to change the <strong>Makefile</strong> to use the <strong>install</strong> directive in the build, not <strong>hinstall</strong>. Browse to:</p>
+
+<pre></code>\Makefile</code></pre>
+
+<p>And find the install directive:</p>
+
+<pre><code>install: $(if $(wildcard prebuilt/*),prebuilt)
+	$(MAKE) -Csrc hinstall
+	$(MAKE) -Csrc
+</code></pre>
+
+<p>Change <code>$(MAKE) -Csrc hinstall</code> to <code>$(MAKE) -Csrc install</code> (removing just the one 'h'). 'Clean' your project and build it again: it will now use the code from the <code>\src</code> folder.</p>
+
+<hr class="end">
+
+<span class="credit"><a href="https://www.linkedin.com/pub/eric-steendijk/86/369/565">Eric Steendijk</a> contributed to the research in this article.</span>
+
+<hr>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="LeonGersen" data-size="large" data-count="none">Tweet</a>
+
+<div class="comments">
+	<div class="fb-comments" data-href="http://refreshless.com/blog/qnx-6.6-on-the-beaglebone-black" data-width="100%" data-colorscheme="light"></div>
+	<div id="fb-root"></div>
+</div>
+
+<script async src="//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0"></script>
+<script async src="//platform.twitter.com/widgets.js"></script>
+		</div>
+	</div>

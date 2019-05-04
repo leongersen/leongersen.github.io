@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+	<head>
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="The PHP Imagick extention for ImageMagick can be tricky to install.">
+
+		<meta property="fb:admins" content="leongersen">
+		<meta property="og:title" content="Installing Imagick PECL on Windows">
+		<meta property="og:url" content="https://refreshless.com/blog/imagick-pecl-imagemagick-windows">
+		<meta property="og:description" content="The PHP Imagick extention for ImageMagick can be tricky to install.">
+				<meta property="og:image" content="http://refreshless.com/blog/posts/2/wamp-phpinfo-imagick.png">
+		
+		<link rel="canonical" href="http://refreshless.com/blog/imagick-pecl-imagemagick-windows">
+
+		<title>Installing Imagick PECL on Windows | Refreshless.com</title>
+
+		<link rel="canonical" href="http://refreshless.com/blog/imagick-pecl-imagemagick-windows">
+
+		<link href="/blog/style.css?d=27" rel="stylesheet">
+
+	</head>
+
+	<div class="container">
+
+		<div class="content" id="content">
+			<h1>Installing Imagick PECL on Windows</h1>
+
+<p>In my fiddling, my Windows workstation serves as a my webserver. While setting up Apache, MySQL and PHP is trivial using <a href="http://www.wampserver.com/en/">WampServer</a>, getting PECL extensions to work can be tricky.</p>
+
+<h2>Which package should I download?</h2>
+
+<p>Prebuilt packages are <a href="http://www.imagemagick.org/script/binary-releases.php#windows">available for Windows</a>. (I went with the 32 bit version, even though my OS is 64 bit. I'm pretty sure 64 bit will work, too.)<p>
+
+<p>The setup has two points of attention: installation path and environment variables. I went with a can't-fail path:</p>
+
+<pre><code>C:\img</code></pre>
+
+<p>The Imagick installer will offer to set the environment variable in your path. You'll either want to check this option, or ignore it, as you'll have to <strong>manually change it</strong> anyway.</p>
+
+<h2>Configuring the Windows Enviroment</h2>
+
+<p>Now for something the documentation <strong>does not</strong> mention: setting the <code>MAGICK_HOME</code> value in your environment. ImageMagick requires this variable so it knows where to find all relevant coders.</p>
+
+<p>Open up the control panel, and search for <code>'PATH'</code>. In the results, select 'Edit the system environment variables'. Select the 'Environment variables...' option, and <strong>add</strong> a new 'System variable' (the lower list). If you've chosen a different installation path, make sure to replace <code>C:\img</code> with your own path.</p>
+
+<pre><code>Variable: <strong>MAGICK_HOME</strong>
+Value: <strong>C:\img\modules\coders</strong></code></pre>
+
+<h2>Install the PECL package</h2>
+
+<p>Next up, we'll actually install the PECL package. The maintainers have been so kind as to provide a <a href="http://pecl.php.net/package/imagick/3.1.2/windows">Imagick DLL</a>. If you are using WAMP, like me, make sure to use the <strong>Thread Save</strong> version. Pick the package that matches your PHP version and the X86/X64 version of ImageMagick you've installed.</p>
+
+<p>From the download, in my case <code>php_imagick-3.1.2-5.5-nts-vc11-x86.zip</code>, grab the <code>php_imagick.dll</code> file, and move it your PHP extention folder:</p>
+
+<pre><code>C:\wamp\bin\php\php5.5.12\ext</code></pre>
+
+<p>The other DLL's, all starting with <code>CORE_RL_*</code>, can be moved into <strong>Apache's binary</strong> folder:</p>
+
+<pre><code>C:\wamp\bin\apache\apache2.4.9\bin</code></pre>
+
+<p>Finally, activate the extention in your PHP.ini file. Make sure to actually edit the <em>loaded</em> configuration file. (You can check with <code>phpinfo()</code> if you're not sure.)</p>
+
+<pre><code>C:\wamp\bin\apache\apache2.4.9\bin\php.ini</code></pre>
+
+<p>Find the list of extensions, and add Imagick:</p>
+
+<pre><code>extension=php_imagick.dll</code></pre>
+
+<h2>Check if everything is OK</h2>
+
+<p><strong>Restart</strong> Apache, and check <code>phpinfo()</code> again. If all went well, you'll find details on the Imagick installation:</p>
+
+<img src="/blog/posts/2/wamp-phpinfo-imagick.png" alt="Imagick PECL extension on Windows">
+
+<hr class="end">
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="LeonGersen" data-size="large" data-count="none">Tweet</a>
+
+<div class="comments">
+	<div class="fb-comments" data-href="http://refreshless.com/blog/imagick-pecl-imagemagick-windows" data-width="100%" data-colorscheme="light"></div>
+	<div id="fb-root"></div>
+</div>
+
+<script async src="//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0"></script>
+<script async src="//platform.twitter.com/widgets.js"></script>
+		</div>
+	</div>
