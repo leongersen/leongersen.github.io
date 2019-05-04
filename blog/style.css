@@ -1,0 +1,164 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+html {
+	font: 400 18px/1.7 -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+	overflow-y: scroll;
+}
+a {
+	text-decoration: none;
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 52px;
+	line-height: 1.2;
+	margin-bottom: 30px;
+}
+h2 {
+	font-size: 22px;
+	font-weight: 400;
+	margin-bottom: 10px;
+}
+h3 {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+p, ul, pre {
+	margin-bottom: 25px;
+}
+p, .inline {
+	max-width: 560px;
+}
+pre {
+	tab-size: 4;
+}
+:not(pre) > code {
+	padding: .1em;
+	border-radius: .3em;
+	background: #b3d4fc;
+}
+
+blockquote {
+	padding-left: 30px;
+	margin-bottom: 30px;
+	border-left: 10px solid #b3d4fc;
+}
+cite {
+	font-style: italic;
+	text-align: right;
+	display: block;
+	padding: 20px;
+}
+
+.credit {
+	font-size: 14px;
+	margin-top: 30px;
+	display: block;
+}
+
+hr {
+	height: 1px;
+	background: #ccc;
+	margin: 30px 0;
+}
+.end {
+	margin: 60px 0 30px;
+}
+
+.footer {
+	background: #DDD;
+}
+.footer-content {
+	width: 900px;
+	max-width: 100%;
+	padding: 20px;
+	margin: 0 auto;
+}
+
+
+.container {
+	width: 900px;
+	max-width: 100%;
+	margin: 50px auto 0;
+	min-height: 500px;
+}
+.content, .side {
+}
+.content {
+	padding: 0 70px 100px 20px;
+}
+.side {
+	float: right;
+	padding: 0 20px 50px 90px;
+	width: 280px;
+}
+
+.comments {
+	margin: 30px 0;
+	max-width: 700px;
+	min-height: 200px;
+}
+
+.author {
+	margin-bottom: 20px;
+	display: block;
+}
+.author-text {
+	font-size: 14px;
+	font-style: italic;
+}
+.author-name {
+	font-size: 14px;
+	font-weight: 700;
+	text-align: right;
+}
+
+.posted {
+	margin: 20px 0;
+	font-size: 14px;
+	font-weight: 300;
+}
+
+.post {
+	color: #000;
+	margin-bottom: 15px;
+	display: block;
+}
+.post em {
+	font-size: 14px;
+	font-weight: 300;
+}
+.link {
+	color: blue;
+	text-decoration: underline;
+}
+.more-link {
+	float: right;
+}
+
+@media ( max-width: 700px ) {
+
+	.side {
+		float: none;
+		margin: 0 auto;
+	}
+
+	.content {
+		padding: 20px;
+	}
+
+	pre {
+		max-width: 100%;
+		overflow-y: scroll;
+	}
+
+}
