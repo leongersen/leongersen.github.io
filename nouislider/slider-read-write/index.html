@@ -3,6 +3,7 @@ permalink: nouislider/slider-read-write/
 ---
 <!DOCTYPE html>
 
+<html lang="en-US">
 <head>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +17,8 @@ permalink: nouislider/slider-read-write/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/distribute/nouislider.css?v=1315" rel="stylesheet">
-    <script src="/nouislider/distribute/nouislider.js?v=1315"></script>
+    <link href="/nouislider/distribute/nouislider.css?v=1400" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1400"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/slider-read-write/">
 
@@ -28,8 +29,9 @@ permalink: nouislider/slider-read-write/
 
 <div class="bar-group">
     <a class="bar-link project" href="/nouislider/">noUiSlider</a>
-    <a class="bar-link" href="/nouislider/slider-values/">Slider Range and Handles</a>
+    <a class="bar-link" href="/nouislider/slider-values/">Range and Handles</a>
     <a class="bar-link" href="/nouislider/slider-read-write/">Reading &amp; Setting Values</a>
+    <a class="bar-link" href="/nouislider/number-formatting/">Formatting</a>
     <a class="bar-link" href="/nouislider/slider-options/">Options</a>
     <a class="bar-link" href="/nouislider/behaviour-option/">Tapping, Dragging &amp; Fixed Ranges</a>
     <a class="bar-link" href="/nouislider/examples/">Examples</a>
@@ -185,119 +187,7 @@ document.getElementById('read-button').addEventListener('click', function () {
 <section>
 
 	<div class="view">
-
-		<p>To format the slider output, noUiSlider offers a <code>format</code> option. Simply specify <code>to</code> and <code>from</code> functions to encode and decode the values. See <em>manual formatting</em> to the right for usage information.</p>
-
-		<p>By default, noUiSlider will format output with <strong>2 decimals</strong>.</p>
-
-		<p>Manual formatting can be error-prone, so noUiSlider has support for <a href="/wnumb">the wNumb formatting library</a>. wNumb offers a wide range of options and provides number validation.</p>
-
-        <p>Formatting can also be used for the <code>aria-valuenow</code> accessibility attribute using the <code>ariaFormat</code> option.</p>
-
-		<p>Note that if the <code>.to()</code> method returns a <code>Number</code>, noUiSlider's <code>.get()</code> will also return <code>Number</code>s. See <a href="https://github.com/leongersen/noUiSlider/issues/813">this issue </a> for more details.
-		
-		<div class="example">
-			<div id="slider-format"></div>
-			<input title="Formatted number" id="input-format">
-			
-<script>
-var sliderFormat = document.getElementById('slider-format');
-
-noUiSlider.create(sliderFormat, {
-    start: [20000],
-    step: 1000,
-    range: {
-        'min': [20000],
-        'max': [80000]
-    },
-    ariaFormat: wNumb({
-        decimals: 3
-    }),
-    format: wNumb({
-        decimals: 3,
-        thousand: '.',
-        suffix: ' (US $)'
-    })
-});
-</script>			
-<script>
-var inputFormat = document.getElementById('input-format');
-
-sliderFormat.noUiSlider.on('update', function (values, handle) {
-    inputFormat.value = values[handle];
-});
-
-inputFormat.addEventListener('change', function () {
-    sliderFormat.noUiSlider.set(this.value);
-});
-</script>		</div>
-
-	</div>
-
-	<div class="side">
-
-		<div class="viewer-header">Formatting with wNumb</div>
-
-		<div class="viewer-content">
-			
-<pre><code>var sliderFormat = document.getElementById('slider-format');
-
-noUiSlider.create(sliderFormat, {
-    start: [20000],
-    step: 1000,
-    range: {
-        'min': [20000],
-        'max': [80000]
-    },
-    ariaFormat: wNumb({
-        decimals: 3
-    }),
-    format: wNumb({
-        decimals: 3,
-        thousand: '.',
-        suffix: ' (US $)'
-    })
-});
-</code></pre>		</div>
-
-		<div class="viewer-header">Manual formatting</div>
-
-		<div class="viewer-content">
-			
-<pre><code>var sliderFormat = document.getElementById('slider-format');
-
-noUiSlider.create(sliderFormat, {
-    start: [20],
-    step: 10,
-    range: {
-        'min': [20],
-        'max': [80]
-    },
-    format: {
-        to: function (value) {
-            return value + ',-';
-        },
-        from: function (value) {
-            return value.replace(',-', '');
-        }
-    }
-});
-</code></pre>		</div>
-
-		<div class="viewer-header">Linking the input field</div>
-
-		<div class="viewer-content">
-			
-<pre><code>var inputFormat = document.getElementById('input-format');
-
-sliderFormat.noUiSlider.on('update', function (values, handle) {
-    inputFormat.value = values[handle];
-});
-
-inputFormat.addEventListener('change', function () {
-    sliderFormat.noUiSlider.set(this.value);
-});
-</code></pre>		</div>
+        <p>See <a href="/nouislider/number-formatting/">the documentation on number formatting</a>.</p>
 	</div>
 
 </section>
@@ -317,5 +207,5 @@ inputFormat.addEventListener('change', function () {
 
 <script src="/nouislider/documentation/assets/prism.js"></script>
 
-
 </body>
+</html>
