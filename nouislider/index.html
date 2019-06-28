@@ -17,8 +17,8 @@ permalink: nouislider/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/distribute/nouislider.css?v=1401" rel="stylesheet">
-    <script src="/nouislider/distribute/nouislider.js?v=1401"></script>
+    <link href="/nouislider/distribute/nouislider.css?v=1402" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1402"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/">
 
@@ -39,23 +39,83 @@ permalink: nouislider/
 <script>
 var slider = document.getElementById('slider');
 
+var valuesArray = [
+    "0",
+    "100",
+    "1000",
+    "5000",
+    "10000",
+    "50000",
+    "100000",
+    "1000000"
+];
+
 noUiSlider.create(slider, {
-    start: [20, 80],
-    connect: true,
+    start: ["100"],
     range: {
-        'min': 0,
-        'max': 100
+        min: [0, 1],
+        max: [7, 1]
+    },
+    step: 1,
+    format: {
+        to: v => {
+            // console.log(v);
+                return valuesArray[v];
+            }
+            ,
+        from: v => {
+            console.log(v);
+            const index = valuesArray.indexOf(v);
+
+            // If keyboard is used, the provided value is not the formatted one,
+            // but the index itself
+            if (index === -1) {
+                return Number(v);
+            }
+
+            return index;
+        }
     }
 });
 </script>            
 <pre><code>var slider = document.getElementById('slider');
 
+var valuesArray = [
+    "0",
+    "100",
+    "1000",
+    "5000",
+    "10000",
+    "50000",
+    "100000",
+    "1000000"
+];
+
 noUiSlider.create(slider, {
-    start: [20, 80],
-    connect: true,
+    start: ["100"],
     range: {
-        'min': 0,
-        'max': 100
+        min: [0, 1],
+        max: [7, 1]
+    },
+    step: 1,
+    format: {
+        to: v => {
+            // console.log(v);
+                return valuesArray[v];
+            }
+            ,
+        from: v => {
+            console.log(v);
+            const index = valuesArray.indexOf(v);
+
+            // If keyboard is used, the provided value is not the formatted one,
+            // but the index itself
+            if (index === -1) {
+                return Number(v);
+            }
+
+            return index;
+        }
     }
 });
 </code></pre>            <pre><code class="language-console">npm <span class="token function">install</span> <span
