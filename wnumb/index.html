@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <head>
@@ -12,7 +11,7 @@
 
 	<link href="https://refreshless.com/nouislider/documentation/assets/base.css" rel="stylesheet">
 	<link href="https://refreshless.com/nouislider/documentation/assets/prism.css" rel="stylesheet">
-	
+
 	<link rel="canonical" href="https://refreshless.com/wnumb/">
 
 </head>
@@ -22,7 +21,7 @@
 	<div class="bar-group">
 		<a class="bar-link project" href="/wnumb/">wNumb</a>
 		<a class="bar-link" href="/wnumb/options/">Formatting options</a>
-		<a class="bar-link download" href="https://github.com/leongersen/wnumb/archive/1.1.0.zip" onclick="return trackLink(this, 'wNumb','download')">Download wNumb</a>
+		<a class="bar-link download" href="https://github.com/leongersen/wnumb/releases">Download wNumb</a>
 	</div>
 
 	<div class="content">
@@ -31,10 +30,12 @@
 		<h2>JavaScript Number & Money formatting</h2>
 
 		<section>
-			<p class="intro">wNumb is a formatting library with a dead-simple interface. It has two methods: <br><strong>to</strong> and <strong>from</strong>. Licensed <a onclick="return trackLink(this, 'wNumb','license')" href="http://www.wtfpl.net/about/">WTFPL</a>, so free for personal and commercial use. <br>At <strong>989 bytes</strong> for the compressed + Gzipped version, page loads won't suffer.<br><br>Works in all modern browsers and IE7+.</p>
+			<p class="intro">wNumb is a formatting library with a dead-simple interface. It has two methods: <strong>to</strong> and <strong>from</strong>.</p>
+
+			<p>Licensed MIT, so free for personal and commercial use. <br>At <strong>989 bytes</strong> for the compressed + Gzipped version, page loads won't suffer.<br><br>Works in all modern browsers and IE7+.</p>
 
 			<div style="max-width:600px;text-align:center;">
-			<a class="button" href="https://github.com/leongersen/wnumb/archive/1.1.0.zip" onclick="return trackLink(this, 'wNumb','download')">Download wNumb from GitHub</a>
+			<a class="button" href="https://github.com/leongersen/wnumb/releases">Download wNumb from GitHub</a>
 			<a href="/wnumb/options/" class="strong-link">All formatting options</a>
 			</div>
 		</section>
@@ -42,7 +43,7 @@
 		<section>
 			<h2>Usage</h2>
 
-			
+
 <pre><code>var moneyFormat = wNumb({
 	mark: '.',
 	thousand: ',',
@@ -62,7 +63,7 @@ moneyFormat.from( '$ 301,980.62 p.p.' );
 		<section>
 			<h2>Examples</h2>
 
-			
+
 <pre><code>// Appending money-formatting
 var Format = wNumb({
 	prefix: '$ ',
@@ -73,7 +74,7 @@ var Format = wNumb({
 // Numbers are always correctly rounded
 Format.to ( 980735.2635 )
 	=> '$ 980,735.264'
-</code></pre>			
+</code></pre>
 <pre><code>// Manually edit numbers
 var Format = wNumb({
 	thousand: '.',
@@ -87,7 +88,7 @@ var Format = wNumb({
 
 Format.from ( '-95.060.000.000' )
 	=> -9506
-</code></pre>			
+</code></pre>
 <pre><code>// Prefixing negative numbers with a string
 var Format = wNumb({
 	prefix: '$',
@@ -97,8 +98,8 @@ var Format = wNumb({
 Format.to ( -260 )
 	=> '[NEGATIVE] $260'
 Format.from ( '[NEGATIVE] $260' )
-	=> -260 
-</code></pre>			
+	=> -260
+</code></pre>
 <pre><code>// Parsing miss-matches and typo's
 var Format = wNumb({
 	prefix: '$',
@@ -113,7 +114,7 @@ Format.to ( '90000' )
 // it'll be extracted, even if pre/post-fixes are missing or off.
 Format.from ( '90000 money' )
 	=> 90000
-	
+
 // No idea... If the value makes no sense,
 // the 'from' method returns false.
 Format.from ( 'spaaaaacceeee!!!' )
@@ -123,4 +124,4 @@ Format.from ( 'spaaaaacceeee!!!' )
 
 	<script src="/nouislider/documentation/assets/prism.js"></script>
 
-	</body>
+</body>
