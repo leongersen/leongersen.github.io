@@ -71,7 +71,7 @@
     </head>
     <body>
 
-        <h1><a href="#" onclick="form.reset()">APE</a></h1>
+        <h1><a href="javascript:window.location.hash='';form.reset();loadScore()">APE</a></h1>
         <h2>Calculate how much alcohol you are getting for your hard-earned €!</h2>
 
         <form id="form" autocomplete="off">
@@ -112,11 +112,19 @@
             const shareContainer = document.getElementById('share-container');
             const shareInput = document.getElementById('share');
 
-            if (window.location.hash) {
+            function loadScore() {
                 let nameValue = '';
-                [nameValue, volumeInput.value, apvInput.value, priceInput.value] = window.location.hash.substring(1).split(',');
-                nameInput.value = nameValue ? atob(nameValue) : '';
-                ape.innerText = getApe();
+                let values = window.location.hash.substring(1);
+
+                if (values) {
+                    [nameValue, volumeInput.value, apvInput.value, priceInput.value] = values.split(',');
+                    nameInput.value = nameValue ? atob(nameValue) : '';
+                    ape.innerText = getApe();
+                }
+            }
+
+            if (window.location.hash) {
+                loadScore();
             }
 
             form.addEventListener('input', () => {
@@ -154,15 +162,15 @@
 
                 window.location.hash = '#' + btoa(name) + ',' + vol + ',' + apv + ',' + price;
 
-                if (apv === 0 && price === 0) {
+                if (vol && apv === 0 && price === 0) {
                     return '🚿';
                 }
 
-                if (price === 0) {
+                if (vol && price === 0) {
                     return '🎉';
                 }
 
-                if (apv === 0) {
+                if (vol && apv === 0) {
                     return '😭';
                 }
 
@@ -177,7 +185,7 @@
 
                 ape.style.filter = '';
 
-                return  '?';
+                return '?';
             }
 
         </script>
