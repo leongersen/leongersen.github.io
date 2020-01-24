@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Alcohol Per Euro</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Calculate how much alcohol you are getting for your hard-earned €!">
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+            }
+
+            html {
+                background: tomato;
+                color: #FFF;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                font-size: 100%;
+            }
+
+            body {
+                padding: 1rem;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 5rem;
+            }
+
+            h2 {
+                margin-bottom: 1rem;
+            }
+
+            label, label span, input {
+                display: block;
+                margin: 0 auto;
+                text-align-last: center;
+            }
+
+            input {
+                -webkit-appearance: none;
+                padding: 1rem;
+                border: none;
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 0.3rem;
+            }
+
+            label {
+                margin-bottom: 2rem;
+            }
+
+            label span {
+                margin-bottom: .5rem;
+            }
+
+            #ape {
+                font-size: 6rem;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <h1>APE</h1>
+        <h2>Calculate how much alcohol you are getting for your hard-earned €!</h2>
+
+        <form id="form" autocomplete="off">
+            <label>
+                <span>How much did it cost?</span>
+                <input id="price" type="number" placeholder="€" min="0" step=".01">
+            </label>
+            <label>
+                <span>What is the alcohol/volume?</span>
+                <input id="apv" type="number" placeholder="%" min="0" max="100" step=".1">
+            </label>
+            <label>
+                <span>How much are you getting?</span>
+                <input id="milliliters" type="number" placeholder="ml" min="0" step="1">
+            </label>
+        </form>
+
+        <div>
+            <h3>Your APE score:</h3>
+            <div id="ape"></div>
+        </div>
+
+        <script>
+            const form = document.getElementById('form');
+            const priceInput = document.getElementById('price');
+            const apvInput = document.getElementById('apv');
+            const volumeInput = document.getElementById('milliliters');
+            const ape = document.getElementById('ape');
+
+            form.addEventListener('change', () => {
+                ape.innerText = getApe();
+            });
+
+            function getApe() {
+                const vol = Number(volumeInput.value);
+                const apv = Number(apvInput.value);
+                const price = Number(priceInput.value);
+                return vol && apv && price ? vol * apv / 100 / price : '?';
+            }
+
+        </script>
+    </body>
+</html>
