@@ -703,29 +703,31 @@ noUiSlider.create(tooltipSlider, {
 		<p>Set the animate option to <code>false</code> to prevent the slider from animating to a new value with when calling <code>.set()</code>.</p>
 
 		<div class="example" style="margin: 0; padding-bottom: 20px">
-			<div class="sliders" id="slider-animate-true"></div>
-			<button id="set-sliders">Set sliders</button>
-		</div>
-
-		<div class="example" style="margin: 0;">
-			<div class="sliders" id="slider-animate-false"></div>
-			
+			<div class="sliders" id="slider-slow"></div>
+            
 <script>
-var trueSlider = document.getElementById('slider-animate-true');
-var falseSlider = document.getElementById('slider-animate-false');
-var setButton = document.getElementById('set-sliders');
+var animatedSlider = document.getElementById('slider-slow');
 
-noUiSlider.create(trueSlider, {
+noUiSlider.create(animatedSlider, {
     animate: true,
-    animationDuration: 300,
+    animationDuration: 1600,
     start: 20,
     range: {
         min: 0,
         max: 100
     }
 });
+</script>			<button id="set-sliders">Set sliders</button>
+		</div>
 
-noUiSlider.create(falseSlider, {
+		<div class="example" style="margin: 0;">
+			<div class="sliders" id="slider-animate-false"></div>
+			
+<script>
+var unAnimatedSlider = document.getElementById('slider-animate-false');
+var setButton = document.getElementById('set-sliders');
+
+noUiSlider.create(unAnimatedSlider, {
     animate: false,
     start: 20,
     range: {
@@ -735,8 +737,8 @@ noUiSlider.create(falseSlider, {
 });
 
 setButton.addEventListener('click', function () {
-    trueSlider.noUiSlider.set(60);
-    falseSlider.noUiSlider.set(60);
+    animatedSlider.noUiSlider.set(60);
+    unAnimatedSlider.noUiSlider.set(60);
 });
 </script>		</div>
 
@@ -750,7 +752,11 @@ setButton.addEventListener('click', function () {
 
 		<br>
 
-		<p>The <code>animationDuration</code> option can be used to set the animation speed assumed by the slider library. In <strong>addition</strong> to this, you must <strong>manually</strong> alter the CSS <code>(-webkit-)transition</code> property for the <code>.noUi-state-tap .noUi-origin</code> selector.</p>
+        <h3>Animation Duration</h3>
+
+		<p>The <code>animationDuration</code> option can be used to set the animation speed assumed by the slider library.</p>
+
+        <p>In addition to this, the CSS <code>(-webkit-)transition</code> property for the <code>.noUi-state-tap .noUi-origin</code> and <code>.noUi-state-tap .noUi-connect</code> selectors must be set.</p>
 
 		<div class="options">
 			<strong>Default</strong>
@@ -763,21 +769,10 @@ setButton.addEventListener('click', function () {
 
 	<div class="side">
 		
-<pre><code>var trueSlider = document.getElementById('slider-animate-true');
-var falseSlider = document.getElementById('slider-animate-false');
+<pre><code>var unAnimatedSlider = document.getElementById('slider-animate-false');
 var setButton = document.getElementById('set-sliders');
 
-noUiSlider.create(trueSlider, {
-    animate: true,
-    animationDuration: 300,
-    start: 20,
-    range: {
-        min: 0,
-        max: 100
-    }
-});
-
-noUiSlider.create(falseSlider, {
+noUiSlider.create(unAnimatedSlider, {
     animate: false,
     start: 20,
     range: {
@@ -787,10 +782,38 @@ noUiSlider.create(falseSlider, {
 });
 
 setButton.addEventListener('click', function () {
-    trueSlider.noUiSlider.set(60);
-    falseSlider.noUiSlider.set(60);
+    animatedSlider.noUiSlider.set(60);
+    unAnimatedSlider.noUiSlider.set(60);
 });
-</code></pre>	</div>
+</code></pre>
+        <div class="viewer-header">Changing animation duration</div>
+
+        <div class="viewer-content">
+            
+<pre><code>var animatedSlider = document.getElementById('slider-slow');
+
+noUiSlider.create(animatedSlider, {
+    animate: true,
+    animationDuration: 1600,
+    start: 20,
+    range: {
+        min: 0,
+        max: 100
+    }
+});
+</code></pre>            
+<style>#slider-slow.noUi-state-tap .noUi-connect,
+#slider-slow.noUi-state-tap .noUi-origin {
+    -webkit-transition: transform 1600ms;
+    transition: transform 1600ms;
+}
+</style><pre class="language-css"><code>#slider-slow.noUi-state-tap .noUi-connect,
+#slider-slow.noUi-state-tap .noUi-origin {
+    -webkit-transition: transform 1600ms;
+    transition: transform 1600ms;
+}
+</code></pre>        </div>
+	</div>
 
 </section>
 
