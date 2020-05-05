@@ -17,8 +17,8 @@ permalink: nouislider/more/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/distribute/nouislider.css?v=1420" rel="stylesheet">
-    <script src="/nouislider/distribute/nouislider.js?v=1420"></script>
+    <link href="/nouislider/distribute/nouislider.css?v=1430" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1430"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/more/">
 
@@ -441,6 +441,8 @@ button6.addEventListener('click', function () {
 
 		<p>If your styling system doesn't match the convention in noUiSlider, you can use the <code>cssPrefix</code> and <code>cssClasses</code> options to reconfigure the markup.</p>
 
+        <p>Alternatively, to modify the default classes for all sliders, a modifiable reference to the default class list is available as <code>noUiSlider.cssClasses</code>.</p>
+
         <p>When adding padding to <code>.noUi-target</code>, you'll notice the <code>.noUi-connect</code> elements don't fill the slider width. This can be fixed by increasing the size of <code>.noUi-connects</code>. An example is included to the right.</p>
 	</div>
 
@@ -511,7 +513,11 @@ button6.addEventListener('click', function () {
 
 		<div class="viewer-content">
 			
-<pre><code>noUiSlider.create(slider, {
+<pre><code>// Change default classes for all sliders
+// For example, all sliders will now have the className "noUi-target range-slider"
+noUiSlider.cssClasses.target += ' range-slider';
+
+noUiSlider.create(slider, {
     start: 80,
     range: {
         min: 0,
@@ -519,11 +525,9 @@ button6.addEventListener('click', function () {
     },
     cssPrefix: 'noUi-', // defaults to 'noUi-',
     cssClasses: {
-        // Full list of classnames to override.
+        // Full list of class names to override.
         // Does NOT extend the default classes.
-        // The First Class in String gets prefixed, the rest gets added as it is
-        // Have a look at the source for the full, current list:
-        // https://github.com/leongersen/noUiSlider/blob/master/src/nouislider.js#L880
+        // The first class in String gets prefixed, the rest gets added as it is
     }
 });
 </code></pre>		</div>
