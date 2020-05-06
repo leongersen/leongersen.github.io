@@ -13,12 +13,12 @@ permalink: nouislider/examples/
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 
-    <link href="/nouislider/documentation/assets/base.css?v=2" rel="stylesheet">
+    <link href="/nouislider/documentation/assets/base.css?v=3" rel="stylesheet">
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/distribute/nouislider.css?v=1430" rel="stylesheet">
-    <script src="/nouislider/distribute/nouislider.js?v=1430"></script>
+    <link href="/nouislider/distribute/nouislider.css?v=1440" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1440"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/examples/">
 
@@ -45,8 +45,9 @@ permalink: nouislider/examples/
     
 <section>
 	<ul>
-		<li><a href="#section-colorpicker">Color Picker</a></li>
+		<li><a href="#section-colorpicker">Color picker</a></li>
 		<li><a href="#section-dates">Using dates</a></li>
+		<li><a href="#section-merging-tooltips">Merging overlapping tooltips</a></li>
 		<li><a href="#section-html5">Working with HTML5 input types</a></li>
 		<li><a href="#section-non-linear">Using non linear ranges</a></li>
 		<li><a href="#section-lock">Locking two sliders together</a></li>
@@ -427,6 +428,220 @@ function formatDate(date) {
 }
 </code></pre>		</div>
 	</div>
+</section>
+<a href="#section-merging-tooltips" id="section-merging-tooltips" class="section-link">&sect;</a><h1>Merging overlapping tooltips</h1>
+
+<section>
+
+    <div class="view">
+        <p><a href="https://github.com/leongersen/noUiSlider/issues/1032">Issue #1032</a> asks to merge overlapping tooltips. As this feature is outside the scope of the tooltips-feature in noUiSlider, this example can be used to implement this feature using the event system.</p>
+
+        <div class="example">
+            <div id="merging-tooltips"></div>
+            
+<script>
+/**
+ * @param slider HtmlElement with an initialized slider
+ * @param threshold Minimum proximity (in percentages) to merge tooltips
+ * @param separator String joining tooltips
+ */
+function mergeTooltips(slider, threshold, separator) {
+
+    var textIsRtl = getComputedStyle(slider).direction === 'rtl';
+    var isRtl = slider.noUiSlider.options.direction === 'rtl';
+    var isVertical = slider.noUiSlider.options.orientation === 'vertical';
+    var tooltips = slider.noUiSlider.getTooltips();
+    var origins = slider.noUiSlider.getOrigins();
+
+    // Move tooltips into the origin element. The default stylesheet handles this.
+    tooltips.forEach(function (tooltip, index) {
+        if (tooltip) {
+            origins[index].appendChild(tooltip);
+        }
+    });
+
+    slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
+
+        var pools = [[]];
+        var poolPositions = [[]];
+        var poolValues = [[]];
+        var atPool = 0;
+
+        // Assign the first tooltip to the first pool, if the tooltip is configured
+        if (tooltips[0]) {
+            pools[0][0] = 0;
+            poolPositions[0][0] = positions[0];
+            poolValues[0][0] = values[0];
+        }
+
+        for (var i = 1; i < positions.length; i++) {
+            if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
+                atPool++;
+                pools[atPool] = [];
+                poolValues[atPool] = [];
+                poolPositions[atPool] = [];
+            }
+
+            if (tooltips[i]) {
+                pools[atPool].push(i);
+                poolValues[atPool].push(values[i]);
+                poolPositions[atPool].push(positions[i]);
+            }
+        }
+
+        pools.forEach(function (pool, poolIndex) {
+            var handlesInPool = pool.length;
+
+            for (var j = 0; j < handlesInPool; j++) {
+                var handleNumber = pool[j];
+
+                if (j === handlesInPool - 1) {
+                    var offset = 0;
+
+                    poolPositions[poolIndex].forEach(function (value) {
+                        offset += 1000 - 10 * value;
+                    });
+
+                    var direction = isVertical ? 'bottom' : 'right';
+                    var last = isRtl ? 0 : handlesInPool - 1;
+                    var lastOffset = 1000 - 10 * poolPositions[poolIndex][last];
+                    offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
+
+                    // Center this tooltip over the affected handles
+                    tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
+                    tooltips[handleNumber].style.display = 'block';
+                    tooltips[handleNumber].style[direction] = offset + '%';
+                } else {
+                    // Hide this tooltip
+                    tooltips[handleNumber].style.display = 'none';
+                }
+            }
+        });
+    });
+}
+</script>            
+<script>
+var mergingTooltipSlider = document.getElementById('merging-tooltips');
+
+noUiSlider.create(mergingTooltipSlider, {
+    start: [20, 32, 50, 70, 80, 90],
+    connect: true,
+    tooltips: [false, true, true, true, true, true],
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+mergeTooltips(mergingTooltipSlider, 15, ' - ');
+</script>        </div>
+    </div>
+
+    <div class="side">
+        <div class="viewer-header">Initializing the slider</div>
+
+        <div class="viewer-content">
+            
+<pre><code>var mergingTooltipSlider = document.getElementById('merging-tooltips');
+
+noUiSlider.create(mergingTooltipSlider, {
+    start: [20, 32, 50, 70, 80, 90],
+    connect: true,
+    tooltips: [false, true, true, true, true, true],
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+mergeTooltips(mergingTooltipSlider, 15, ' - ');
+</code></pre>        </div>
+
+        <div class="viewer-header">Merging overlapping tooltips</div>
+
+        <div class="viewer-content">
+            
+<pre><code>/**
+ * @param slider HtmlElement with an initialized slider
+ * @param threshold Minimum proximity (in percentages) to merge tooltips
+ * @param separator String joining tooltips
+ */
+function mergeTooltips(slider, threshold, separator) {
+
+    var textIsRtl = getComputedStyle(slider).direction === 'rtl';
+    var isRtl = slider.noUiSlider.options.direction === 'rtl';
+    var isVertical = slider.noUiSlider.options.orientation === 'vertical';
+    var tooltips = slider.noUiSlider.getTooltips();
+    var origins = slider.noUiSlider.getOrigins();
+
+    // Move tooltips into the origin element. The default stylesheet handles this.
+    tooltips.forEach(function (tooltip, index) {
+        if (tooltip) {
+            origins[index].appendChild(tooltip);
+        }
+    });
+
+    slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
+
+        var pools = [[]];
+        var poolPositions = [[]];
+        var poolValues = [[]];
+        var atPool = 0;
+
+        // Assign the first tooltip to the first pool, if the tooltip is configured
+        if (tooltips[0]) {
+            pools[0][0] = 0;
+            poolPositions[0][0] = positions[0];
+            poolValues[0][0] = values[0];
+        }
+
+        for (var i = 1; i < positions.length; i++) {
+            if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
+                atPool++;
+                pools[atPool] = [];
+                poolValues[atPool] = [];
+                poolPositions[atPool] = [];
+            }
+
+            if (tooltips[i]) {
+                pools[atPool].push(i);
+                poolValues[atPool].push(values[i]);
+                poolPositions[atPool].push(positions[i]);
+            }
+        }
+
+        pools.forEach(function (pool, poolIndex) {
+            var handlesInPool = pool.length;
+
+            for (var j = 0; j < handlesInPool; j++) {
+                var handleNumber = pool[j];
+
+                if (j === handlesInPool - 1) {
+                    var offset = 0;
+
+                    poolPositions[poolIndex].forEach(function (value) {
+                        offset += 1000 - 10 * value;
+                    });
+
+                    var direction = isVertical ? 'bottom' : 'right';
+                    var last = isRtl ? 0 : handlesInPool - 1;
+                    var lastOffset = 1000 - 10 * poolPositions[poolIndex][last];
+                    offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
+
+                    // Center this tooltip over the affected handles
+                    tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
+                    tooltips[handleNumber].style.display = 'block';
+                    tooltips[handleNumber].style[direction] = offset + '%';
+                } else {
+                    // Hide this tooltip
+                    tooltips[handleNumber].style.display = 'none';
+                }
+            }
+        });
+    });
+}
+</code></pre>        </div>
+    </div>
 </section>
 <a href="#section-html5" id="section-html5" class="section-link">&sect;</a><h1>Using HTML5 input elements</h1>
 
