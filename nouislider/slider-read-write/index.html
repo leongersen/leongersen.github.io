@@ -17,8 +17,8 @@ permalink: nouislider/slider-read-write/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/distribute/nouislider.css?v=1460" rel="stylesheet">
-    <script src="/nouislider/distribute/nouislider.js?v=1460"></script>
+    <link href="/nouislider/distribute/nouislider.css?v=1462" rel="stylesheet">
+    <script src="/nouislider/distribute/nouislider.js?v=1462"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/slider-read-write/">
 
@@ -80,6 +80,8 @@ permalink: nouislider/slider-read-write/
 
         <p>Passing <code>null</code> as the value to <code>setHandle</code> will leave the handle unchanged.</p>
 
+        <p>Both the <code>set</code> and <code>setHandle</code> methods have an <code>exactInput</code> argument, which can be used to ignore the stepping configured for the slider.</p>
+
 		<p>To return to the initial slider values, the <code>.reset()</code> method can be used. This will <strong>only</strong> reset the slider <i>values</i>.</p>
 	</div>
 
@@ -98,12 +100,18 @@ slider.noUiSlider.set([150]);
 slider.noUiSlider.set([null, 14]);
 
 // On a slider with three handles,
-// set the third to 12 (the handleNumber is 0-indexed)
-// Then: fire the set event
-slider.noUiSlider.setHandle(2, 12, true);
+// set the third to 12 (the handleNumber is 0-indexed),
+// fire the set event (default true),
+// Don't ignore stepping on the slider (default false)
+slider.noUiSlider.setHandle(2, 12, true, true);
 
 // Set both slider handles on a slider with two handles
 slider.noUiSlider.set([13.2, 15.7]);
+
+// Set both slider handles on a slider with two handles,
+// fire the set event (default true)
+// Ignore stepping on the slider (default false)
+slider.noUiSlider.set([13.2, 15.7], true, true);
 
 // Return to the 'start' values
 // Does NOT reset any other slider properties
