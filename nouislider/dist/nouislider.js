@@ -1434,7 +1434,7 @@
             var movement = (options.dir ? -1 : 1) * (event.calcPoint - data.startCalcPoint);
             // Convert the movement into a percentage of the slider width/height
             var proposal = (movement * 100) / data.baseSize;
-            moveHandles(movement > 0, proposal, data.locations, data.handleNumbers);
+            moveHandles(movement > 0, proposal, data.locations, data.handleNumbers, data.connect);
         }
         // Unbind move events on document, call callbacks.
         function eventEnd(event, data) {
@@ -1487,6 +1487,7 @@
                 // relying on it to extract target touches.
                 target: event.target,
                 handle: handle,
+                connect: data.connect,
                 listeners: listeners,
                 startCalcPoint: event.calcPoint,
                 baseSize: baseSize(),
@@ -1683,7 +1684,8 @@
                     eventHolders.forEach(function (eventHolder) {
                         attachEvent(actions.start, eventHolder, eventStart, {
                             handles: [handleBefore, handleAfter],
-                            handleNumbers: [index - 1, index]
+                            handleNumbers: [index - 1, index],
+                            connect: connect
                         });
                     });
                 });
@@ -1799,8 +1801,10 @@
         }
         // Moves handle(s) by a percentage
         // (bool, % to move, [% where handle started, ...], [index in scope_Handles, ...])
-        function moveHandles(upward, proposal, locations, handleNumbers) {
+        function moveHandles(upward, proposal, locations, handleNumbers, connect) {
             var proposals = locations.slice();
+            // Store first handle now, so we still have it in case handleNumbers is reversed
+            var firstHandle = handleNumbers[0];
             var b = [!upward, upward];
             var f = [upward, !upward];
             // Copy handleNumbers so we don't change the dataset
@@ -1839,6 +1843,10 @@
                     fireEvent("update", handleNumber);
                     fireEvent("slide", handleNumber);
                 });
+                // If target is a connect, then fire drag event
+                if (connect != undefined) {
+                    fireEvent("drag", firstHandle);
+                }
             }
         }
         // Takes a base value and an offset. This offset is used for the connect bar size.

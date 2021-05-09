@@ -17,8 +17,8 @@ permalink: nouislider/events-callbacks/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1500" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1500"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1510" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1510"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/events-callbacks/">
 
@@ -49,11 +49,11 @@ permalink: nouislider/events-callbacks/
 
 	<div class="view-more">
 
-		<p>noUiSlider offers several ways to listen to interaction: <code>'update'</code>, <code>'change'</code>, <code>'set'</code> and <code>'slide'</code>. These events can all be used at the same time. There are also the <code>'start'</code> and <code>'end'</code> events, that fire when a drag is started or ended.</p>
+		<p>noUiSlider offers several ways to listen to interaction: <code>'update'</code>, <code>'change'</code>, <code>'set'</code>, <code>'slide'</code> and <code>'drag'</code>. These events can all be used at the same time. There are also the <code>'start'</code> and <code>'end'</code> events, that fire when a drag is started or ended.</p>
 
 		<p>Events always fire in the following order:</p>
 
-		<p><code>'start'</code> &gt; <code>'slide'</code> &gt; <code>'update'</code> &gt; <code>'change'</code> &gt; <code>'set'</code> &gt; <code>'end'</code></p>
+		<p><code>'start'</code> &gt; <code>'slide'</code> &gt; <code>'drag'</code> &gt; <code>'update'</code> &gt; <code>'change'</code> &gt; <code>'set'</code> &gt; <code>'end'</code></p>
 
 	</div>
 
@@ -66,6 +66,7 @@ permalink: nouislider/events-callbacks/
 			<div class="logger">
 				<div id="l-update">Update</div>
 				<div id="l-slide">Slide</div>
+				<div id="l-drag">Drag</div>
 				<div id="l-set">Set</div>
 				<div id="l-change">Change</div>
 				<div id="l-start">Start</div>
@@ -93,6 +94,8 @@ var inputLog = document.getElementById('input-log');
 
 noUiSlider.create(slider, {
     start: [0, 10],
+    behaviour: 'drag-tap',
+    connect: [false, true, false],
     range: {
         'min': [0],
         'max': [20]
@@ -117,6 +120,7 @@ inputLog.addEventListener('change', function () {
 <script>
 var lUpdate = document.getElementById('l-update');
 var lSlide = document.getElementById('l-slide');
+var lDrag = document.getElementById('l-drag');
 var lSet = document.getElementById('l-set');
 var lChange = document.getElementById('l-change');
 var lStart = document.getElementById('l-start');
@@ -128,6 +132,10 @@ slider.noUiSlider.on('update', function () {
 
 slider.noUiSlider.on('slide', function () {
     addClassFor(lSlide, 'tShow', 450);
+});
+
+slider.noUiSlider.on('drag', function () {
+    addClassFor(lDrag, 'tShow', 450);
 });
 
 slider.noUiSlider.on('set', function () {
@@ -158,6 +166,7 @@ slider.noUiSlider.on('end', function () {
 				<th>&nbsp;</th>
                 <th width="80">Start</th>
                 <th width="80">Slide</th>
+                <th width="80">Drag</th>
                 <th width="80">Update</th>
                 <th width="80">Change</th>
                 <th width="80">Set</th>
@@ -169,6 +178,7 @@ slider.noUiSlider.on('end', function () {
 				<td><span>A handle is <strong>activated</strong>, starting dragging</span></td>
                 <td class="events-yes" title="Start"><span>Yes</span></td>
                 <td class="events-no" title="Slide"><span>No</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-no" title="Update"><span>No</span></td>
                 <td class="events-no" title="Change"><span>No</span></td>
                 <td class="events-no" title="Set"><span>No</span></td>
@@ -178,6 +188,7 @@ slider.noUiSlider.on('end', function () {
 				<td><span>A handle is <strong>released</strong> after dragging</span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-no" title="Slide"><span>No</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-no" title="Update"><span>No</span></td>
                 <td class="events-yes" title="Change"><span>Yes</span></td>
                 <td class="events-yes" title="Set"><span>Yes</span></td>
@@ -187,6 +198,17 @@ slider.noUiSlider.on('end', function () {
 				<td><span>A handle moves while <strong>dragging</strong></span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-yes" title="Slide"><span>Yes</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
+                <td class="events-yes" title="Update"><span>Yes</span></td>
+                <td class="events-no" title="Change"><span>No</span></td>
+                <td class="events-no" title="Set"><span>No</span></td>
+				<td class="events-no" title="End"><span>No</span></td>
+			</tr>
+			<tr>
+				<td><span>A connect moves while <strong>dragging</strong></span></td>
+                <td class="events-no" title="Start"><span>No</span></td>
+                <td class="events-yes" title="Slide"><span>Yes</span></td>
+                <td class="events-yes" title="Drag"><span>Yes</span></td>
                 <td class="events-yes" title="Update"><span>Yes</span></td>
                 <td class="events-no" title="Change"><span>No</span></td>
                 <td class="events-no" title="Set"><span>No</span></td>
@@ -196,6 +218,7 @@ slider.noUiSlider.on('end', function () {
 				<td><span>The <strong><code>.set()</code></strong> method is called</span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-no" title="Slide"><span>No</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-yes" title="Update"><span>Yes</span></td>
                 <td class="events-no" title="Change"><span>No</span></td>
                 <td class="events-yes" title="Set"><span>Yes</span></td>
@@ -205,6 +228,7 @@ slider.noUiSlider.on('end', function () {
 				<td><span>When bound using the <strong><code>.on()</code></strong> method</span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-no" title="Slide"><span>No</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-yes" title="Update"><span>Yes</span></td>
                 <td class="events-no" title="Change"><span>No</span></td>
                 <td class="events-no" title="Set"><span>No</span></td>
@@ -214,6 +238,7 @@ slider.noUiSlider.on('end', function () {
                 <td><span>A slider is moved by <strong>tapping</strong> it</span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-yes" title="Slide"><span>Yes</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-yes" title="Update"><span>Yes</span></td>
                 <td class="events-yes" title="Change"><span>Yes</span></td>
                 <td class="events-yes" title="Set"><span>Yes</span></td>
@@ -223,6 +248,7 @@ slider.noUiSlider.on('end', function () {
 				<td><span>A handle is moved by arrow keys</span></td>
                 <td class="events-no" title="Start"><span>No</span></td>
                 <td class="events-yes" title="Slide"><span>Yes</span></td>
+                <td class="events-no" title="Drag"><span>No</span></td>
                 <td class="events-yes" title="Update"><span>Yes</span></td>
                 <td class="events-yes" title="Change"><span>Yes</span></td>
                 <td class="events-yes" title="Set"><span>Yes</span></td>
@@ -293,7 +319,18 @@ slider.noUiSlider.off('change');
 <section>
 
 	<div class="view">
-		<p>This event is useful to specifically listen to a handle being dragged, whilst <strong>ignoring other updates</strong> to the slider value. This event also fires on a change by a 'tap'. In most cases, the <code>'update'</code> is the better choice.</p>
+		<p>This event is useful to specifically listen to a handle being dragged, while <strong>ignoring other updates</strong> to the slider value. This event also fires on a change by a 'tap'. In most cases, the <code>'update'</code> is the better choice.</p>
+	</div>
+</section>
+
+<a href="#section-drag" id="section-drag" class="section-link">&sect;</a><h2>Drag</h2>
+
+<section>
+
+	<div class="view">
+		<p>Use this event to listen for when a connect element between handles is being dragged, while <strong>ignoring other updates</strong> to the slider values.</p>
+
+		<p>The handle in the callback is the first handle connected to the dragged connect.</p>
 	</div>
 </section>
 

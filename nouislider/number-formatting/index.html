@@ -17,8 +17,8 @@ permalink: nouislider/number-formatting/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1500" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1500"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1510" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1510"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/number-formatting/">
 
@@ -172,7 +172,28 @@ var tooltipSlider = document.getElementById('slider-tooltips');
 
 noUiSlider.create(tooltipSlider, {
     start: [20, 80, 120],
-    tooltips: [false, wNumb({decimals: 1}), true],
+    tooltips: [
+        false, // no tooltip
+        wNumb({decimals: 1}), // tooltip with custom formatting
+        true // tooltip with default formatting
+    ],
+    /**
+     * Tooltip with default formatting on all handles:
+     * tooltips: true,
+     *
+     * Tooltip with specific formatting on all handles:
+     * tooltips: {
+     *     to: ...,
+     *     from: ...
+     * }
+     *
+     * Tooltip with specific formatting on each handle:
+     * tooltips: [
+     *     { to: ..., from: ... },
+     *     { to: ..., from: ... },
+     *     { to: ..., from: ... },
+     * ]
+     */
     range: {
         'min': 0,
         'max': 200
@@ -187,7 +208,28 @@ noUiSlider.create(tooltipSlider, {
 
 noUiSlider.create(tooltipSlider, {
     start: [20, 80, 120],
-    tooltips: [false, wNumb({decimals: 1}), true],
+    tooltips: [
+        false, // no tooltip
+        wNumb({decimals: 1}), // tooltip with custom formatting
+        true // tooltip with default formatting
+    ],
+    /**
+     * Tooltip with default formatting on all handles:
+     * tooltips: true,
+     *
+     * Tooltip with specific formatting on all handles:
+     * tooltips: {
+     *     to: ...,
+     *     from: ...
+     * }
+     *
+     * Tooltip with specific formatting on each handle:
+     * tooltips: [
+     *     { to: ..., from: ... },
+     *     { to: ..., from: ... },
+     *     { to: ..., from: ... },
+     * ]
+     */
     range: {
         'min': 0,
         'max': 200
