@@ -36,8 +36,11 @@ interface CssClasses {
     valueLarge: string;
     valueSub: string;
 }
-interface Formatter {
+export interface PartialFormatter {
     to: (value: number) => string | number;
+    from?: (value: string) => number | false;
+}
+export interface Formatter extends PartialFormatter {
     from: (value: string) => number | false;
 }
 export declare enum PipsMode {
@@ -64,7 +67,7 @@ interface BasePips {
     mode: PipsMode;
     density?: number;
     filter?: PipsFilter;
-    format?: Formatter;
+    format?: PartialFormatter;
 }
 interface PositionsPips extends BasePips {
     mode: PipsMode.Positions;
@@ -99,7 +102,7 @@ interface UpdatableOptions {
     step?: number;
     pips?: Pips;
     format?: Formatter;
-    tooltips?: boolean | Formatter | (boolean | Formatter)[];
+    tooltips?: boolean | PartialFormatter | (boolean | PartialFormatter)[];
     animate?: boolean;
 }
 export interface Options extends UpdatableOptions {
@@ -114,7 +117,7 @@ export interface Options extends UpdatableOptions {
     documentElement?: HTMLElement;
     cssPrefix?: string;
     cssClasses?: CssClasses;
-    ariaFormat?: Formatter;
+    ariaFormat?: PartialFormatter;
     animationDuration?: number;
 }
 export interface API {
@@ -122,7 +125,7 @@ export interface API {
     steps: () => NextStepsForHandle[];
     on: (eventName: string, callback: EventCallback) => void;
     off: (eventName: string) => void;
-    get: () => GetResult;
+    get: (unencoded?: boolean) => GetResult;
     set: (input: number | string | (number | string)[], fireSetEvent?: boolean, exactInput?: boolean) => void;
     setHandle: (handleNumber: number, value: number | string, fireSetEvent?: boolean, exactInput?: boolean) => void;
     reset: (fireSetEvent?: boolean) => void;

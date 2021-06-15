@@ -21,7 +21,11 @@
     })(exports.PipsType || (exports.PipsType = {}));
     //region Helper Methods
     function isValidFormatter(entry) {
-        return typeof entry === "object" && typeof entry.to === "function" && typeof entry.from === "function";
+        return isValidPartialFormatter(entry) && typeof entry.from === "function";
+    }
+    function isValidPartialFormatter(entry) {
+        // partial formatters only need a to function and not a from function
+        return typeof entry === "object" && typeof entry.to === "function";
     }
     function removeElement(el) {
         el.parentElement.removeChild(el);
@@ -529,13 +533,6 @@
         aria: ".__aria"
     };
     //endregion
-    function validateFormat(entry) {
-        // Any object with a to and from method is supported.
-        if (isValidFormatter(entry)) {
-            return true;
-        }
-        throw new Error("noUiSlider: 'format' requires 'to' and 'from' methods.");
-    }
     function testStep(parsed, entry) {
         if (!isNumeric(entry)) {
             throw new Error("noUiSlider: 'step' is not numeric.");
@@ -743,10 +740,10 @@
         if (entry === false) {
             return;
         }
-        if (entry === true) {
+        if (entry === true || isValidPartialFormatter(entry)) {
             parsed.tooltips = [];
             for (var i = 0; i < parsed.handles; i++) {
-                parsed.tooltips.push(true);
+                parsed.tooltips.push(entry);
             }
         }
         else {
@@ -755,8 +752,7 @@
                 throw new Error("noUiSlider: must pass a formatter for all handles.");
             }
             entry.forEach(function (formatter) {
-                if (typeof formatter !== "boolean" &&
-                    (typeof formatter !== "object" || typeof formatter.to !== "function")) {
+                if (typeof formatter !== "boolean" && !isValidPartialFormatter(formatter)) {
                     throw new Error("noUiSlider: 'tooltips' must be passed a formatter or 'false'.");
                 }
             });
@@ -764,11 +760,15 @@
         }
     }
     function testAriaFormat(parsed, entry) {
-        validateFormat(entry);
+        if (!isValidPartialFormatter(entry)) {
+            throw new Error("noUiSlider: 'ariaFormat' requires 'to' method.");
+        }
         parsed.ariaFormat = entry;
     }
     function testFormat(parsed, entry) {
-        validateFormat(entry);
+        if (!isValidFormatter(entry)) {
+            throw new Error("noUiSlider: 'format' requires 'to' and 'from' methods.");
+        }
         parsed.format = entry;
     }
     function testKeyboardSupport(parsed, entry) {
@@ -1257,8 +1257,7 @@
             var format = pips.format || {
                 to: function (value) {
                     return String(Math.round(value));
-                },
-                from: Number
+                }
             };
             scope_Pips = scope_Target.appendChild(addMarking(spread, filter, format));
             return scope_Pips;
@@ -1987,7 +1986,12 @@
             }
         }
         // Get the slider value.
-        function valueGet() {
+        function valueGet(unencoded) {
+            if (unencoded === void 0) { unencoded = false; }
+            if (unencoded) {
+                // return a copy of the raw values
+                return scope_Values.length === 1 ? scope_Values[0] : scope_Values.slice(0);
+            }
             var values = scope_Values.map(options.format.to);
             // If only one handle is used, return a single value.
             if (values.length === 1) {
