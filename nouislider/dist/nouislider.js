@@ -547,6 +547,12 @@
         }
         parsed.keyboardPageMultiplier = entry;
     }
+    function testKeyboardMultiplier(parsed, entry) {
+        if (!isNumeric(entry)) {
+            throw new Error("noUiSlider: 'keyboardMultiplier' is not numeric.");
+        }
+        parsed.keyboardMultiplier = entry;
+    }
     function testKeyboardDefaultStep(parsed, entry) {
         if (!isNumeric(entry)) {
             throw new Error("noUiSlider: 'keyboardDefaultStep' is not numeric.");
@@ -819,6 +825,7 @@
         var tests = {
             step: { r: false, t: testStep },
             keyboardPageMultiplier: { r: false, t: testKeyboardPageMultiplier },
+            keyboardMultiplier: { r: false, t: testKeyboardMultiplier },
             keyboardDefaultStep: { r: false, t: testKeyboardDefaultStep },
             start: { r: true, t: testStart },
             connect: { r: true, t: testConnect },
@@ -849,6 +856,7 @@
             cssPrefix: "noUi-",
             cssClasses: cssClasses,
             keyboardPageMultiplier: 5,
+            keyboardMultiplier: 1,
             keyboardDefaultStep: 10
         };
         // AriaFormat defaults to regular format, if any.
@@ -1604,7 +1612,6 @@
             event.preventDefault();
             var to;
             if (isUp || isDown) {
-                var multiplier = options.keyboardPageMultiplier;
                 var direction = isDown ? 0 : 1;
                 var steps = getNextStepsForHandle(handleNumber);
                 var step = steps[direction];
@@ -1617,7 +1624,10 @@
                     step = scope_Spectrum.getDefaultStep(scope_Locations[handleNumber], isDown, options.keyboardDefaultStep);
                 }
                 if (isLargeUp || isLargeDown) {
-                    step *= multiplier;
+                    step *= options.keyboardPageMultiplier;
+                }
+                else {
+                    step *= options.keyboardMultiplier;
                 }
                 // Step over zero-length ranges (#948);
                 step = Math.max(step, 0.0000001);
@@ -2193,7 +2203,7 @@
 
     exports.create = initialize;
     exports.cssClasses = cssClasses;
-    exports.default = nouislider;
+    exports['default'] = nouislider;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

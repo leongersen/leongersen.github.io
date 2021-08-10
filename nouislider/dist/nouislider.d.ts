@@ -113,6 +113,7 @@ export interface Options extends UpdatableOptions {
     behaviour?: string;
     keyboardSupport?: boolean;
     keyboardPageMultiplier?: number;
+    keyboardMultiplier?: number;
     keyboardDefaultStep?: number;
     documentElement?: HTMLElement;
     cssPrefix?: string;
