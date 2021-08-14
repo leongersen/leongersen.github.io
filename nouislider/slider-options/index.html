@@ -17,8 +17,8 @@ permalink: nouislider/slider-options/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1530" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1530"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1540" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1540"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/slider-options/">
 
@@ -71,6 +71,7 @@ permalink: nouislider/slider-options/
 		<li><a href="#section-direction">Direction</a></li>
 		<li><a href="#section-tooltips">Tooltips</a></li>
 		<li><a href="#section-animate">Animate</a></li>
+		<li><a href="#section-handle-attributes">Handle Attributes</a></li>
 		<li><a href="#section-keyboard-support">Keyboard Support</a></li>
 		<li><a href="#section-document-element">Document Element <small>(advanced)</small></a></li>
 	</ul>
@@ -816,6 +817,42 @@ noUiSlider.create(animatedSlider, {
 }
 </code></pre>        </div>
 	</div>
+
+</section>
+
+
+<a href="#section-handle-attributes" id="section-handle-attributes" class="section-link">&sect;</a><h2>Handle Attributes</h2>
+
+<section>
+
+    <div class="view">
+
+        <p>Additional attributes can be added to the slider handles using the <code>handleAttributes</code> option.</p>
+
+        <div class="options">
+            <strong>Default</strong>
+            <div><em>[none]</em></div>
+
+            <strong>Accepted values</strong>
+            <div>array of <code>{ key: value }</code> for each handle</div>
+        </div>
+    </div>
+
+    <div class="side">
+
+        
+<pre><code>noUiSlider.create(slider, {
+    start: [10, 120],
+    handleAttributes: [
+        { 'aria-label': 'lower' },
+        { 'aria-label': 'upper' },
+    ],
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</code></pre>    </div>
 
 </section>
 

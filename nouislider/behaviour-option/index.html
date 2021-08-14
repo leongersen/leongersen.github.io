@@ -17,8 +17,8 @@ permalink: nouislider/behaviour-option/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1530" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1530"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1540" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1540"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/behaviour-option/">
 
@@ -51,7 +51,7 @@ permalink: nouislider/behaviour-option/
 
 		<p>noUiSlider offers several ways to handle user interaction. The range can be set to drag, and handles can move to taps. All these effects are optional, and can be enable by adding their keyword to the <code>behaviour</code> option.</p>
 
-		<p>This option accepts a <code>"-"</code> separated list of <code>"drag"</code>, <code>"tap"</code>, <code>"fixed"</code>, <code>"snap"</code>, <code>"unconstrained"</code> or <code>"none"</code>.</p>
+		<p>This option accepts a <code>"-"</code> separated list of <code>"drag"</code>, <code>"drag-all"</code>, <code>"tap"</code>, <code>"fixed"</code>, <code>"snap"</code>, <code>"unconstrained"</code> or <code>"none"</code>.</p>
 
 		<div class="example">
 			<div id="behaviour"></div>
@@ -258,6 +258,47 @@ noUiSlider.create(dragFixedSlider, {
     }
 });
 </code></pre>	</div>
+</section>
+
+
+<a href="#section-drag-all" id="section-drag-all" class="section-link">&sect;</a><h2>Drag all handles</h2>
+
+<section>
+
+    <div class="view">
+        <p>Drags all handles when the <code>'drag'</code> flag is set. Requires more than two handles. The <code>connect</code> option <strong>must</strong> be set to <code>true</code>. The <code>slide</code> event fires for all handles when dragging the range.</p>
+        <div class="example">
+            <div id="drag-all"></div>
+            
+<script>
+var dragAllSlider = document.getElementById('drag-all');
+
+noUiSlider.create(dragAllSlider, {
+    start: [40, 60, 80],
+    behaviour: 'drag-all',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 100
+    }
+});
+</script>        </div>
+    </div>
+
+    <div class="side">
+        
+<pre><code>var dragAllSlider = document.getElementById('drag-all');
+
+noUiSlider.create(dragAllSlider, {
+    start: [40, 60, 80],
+    behaviour: 'drag-all',
+    connect: true,
+    range: {
+        'min': 20,
+        'max': 100
+    }
+});
+</code></pre>    </div>
 </section>
 
 

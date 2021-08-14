@@ -92,6 +92,9 @@ interface RangePips extends BasePips {
 }
 declare type Pips = PositionsPips | ValuesPips | CountPips | StepsPips | RangePips;
 declare type StartValues = string | number | (string | number)[];
+declare type HandleAttributes = {
+    [key: string]: string;
+};
 interface UpdatableOptions {
     range?: Range;
     start?: StartValues;
@@ -120,6 +123,7 @@ export interface Options extends UpdatableOptions {
     cssClasses?: CssClasses;
     ariaFormat?: PartialFormatter;
     animationDuration?: number;
+    handleAttributes?: HandleAttributes[];
 }
 export interface API {
     destroy: () => void;
@@ -176,6 +180,7 @@ declare class Spectrum {
     getDefaultStep(value: number, isDown: boolean, size: number): number;
     getNearbySteps(value: number): NearBySteps;
     countStepDecimals(): number;
+    hasNoSize(): boolean;
     convert(value: number): number;
     private handleEntryPoint;
     private handleStepPoint;
