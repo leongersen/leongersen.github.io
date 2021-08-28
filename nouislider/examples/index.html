@@ -244,9 +244,7 @@ var colors = [0, 0, 0];
 
 	<div class="view">
 
-		<p>This example shows how to convert dates to numerical ranges, and then use the <code>update</code> event to display them in a pretty format.</p>
-
-		<p>We'll be creating timestamps from strings. In order to do this easily, we'll define a new helper function. This function accepts a string, creates a <code>new Date</code> and then returns it as a timestamp.</p>
+		<p>This example shows how to convert dates to numerical ranges, and then use the <code>update</code> event to display them.</p>
 
 		<div class="example">
 			<div id="slider-date"></div>
@@ -254,52 +252,11 @@ var colors = [0, 0, 0];
 			<span class="example-val" id="event-end"></span>
 			
 <script>
-// Create a new date from a string, return as a timestamp.
+var dateSlider = document.getElementById('slider-date');
+
 function timestamp(str) {
     return new Date(str).getTime();
 }
-</script>			
-<script>
-// Create a list of day and month names.
-var weekdays = [
-    "Sunday", "Monday", "Tuesday",
-    "Wednesday", "Thursday", "Friday",
-    "Saturday"
-];
-
-var months = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
-];
-
-// Append a suffix to dates.
-// Example: 23 => 23rd, 1 => 1st.
-function nth(d) {
-    if (d > 3 && d < 21) return 'th';
-    switch (d % 10) {
-        case 1:
-            return "st";
-        case 2:
-            return "nd";
-        case 3:
-            return "rd";
-        default:
-            return "th";
-    }
-}
-
-// Create a string representation of the date.
-function formatDate(date) {
-    return weekdays[date.getDay()] + ", " +
-        date.getDate() + nth(date.getDate()) + " " +
-        months[date.getMonth()] + " " +
-        date.getFullYear();
-}
-</script>			
-<script>
-var dateSlider = document.getElementById('slider-date');
 
 noUiSlider.create(dateSlider, {
 // Create two timestamps to define a range.
@@ -326,29 +283,27 @@ var dateValues = [
     document.getElementById('event-end')
 ];
 
+var formatter = new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'full'
+});
+
 dateSlider.noUiSlider.on('update', function (values, handle) {
-    dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+    dateValues[handle].innerHTML = formatter.format(new Date(+values[handle]));
 });
 </script>		</div>
 	</div>
 
 	<div class="side">
 
-		<div class="viewer-header">Timestamps</div>
-
-		<div class="viewer-content">
-			
-<pre><code>// Create a new date from a string, return as a timestamp.
-function timestamp(str) {
-    return new Date(str).getTime();
-}
-</code></pre>		</div>
-
 		<div class="viewer-header">Setup</div>
 
 		<div class="viewer-content">
 			
 <pre><code>var dateSlider = document.getElementById('slider-date');
+
+function timestamp(str) {
+    return new Date(str).getTime();
+}
 
 noUiSlider.create(dateSlider, {
 // Create two timestamps to define a range.
@@ -370,7 +325,7 @@ noUiSlider.create(dateSlider, {
 });
 </code></pre>		</div>
 
-		<div class="viewer-header">Slider control</div>
+		<div class="viewer-header">Update event</div>
 
 		<div class="viewer-content">
 			
@@ -379,53 +334,13 @@ noUiSlider.create(dateSlider, {
     document.getElementById('event-end')
 ];
 
-dateSlider.noUiSlider.on('update', function (values, handle) {
-    dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+var formatter = new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'full'
 });
-</code></pre>		</div>
 
-		<div class="viewer-header">Helper functions and formatting</div>
-
-		<div class="viewer-content">
-			<p>The <code>nth</code> function was borrowed from <a onclick="return trackLink(this, 'outlink','stackoverflow nth')" href="http://stackoverflow.com/questions/15397372/javascript-new-date-ordinal-st-nd-rd-th">this StackOverflow question</a>.</p>
-			
-<pre><code>// Create a list of day and month names.
-var weekdays = [
-    "Sunday", "Monday", "Tuesday",
-    "Wednesday", "Thursday", "Friday",
-    "Saturday"
-];
-
-var months = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
-];
-
-// Append a suffix to dates.
-// Example: 23 => 23rd, 1 => 1st.
-function nth(d) {
-    if (d > 3 && d < 21) return 'th';
-    switch (d % 10) {
-        case 1:
-            return "st";
-        case 2:
-            return "nd";
-        case 3:
-            return "rd";
-        default:
-            return "th";
-    }
-}
-
-// Create a string representation of the date.
-function formatDate(date) {
-    return weekdays[date.getDay()] + ", " +
-        date.getDate() + nth(date.getDate()) + " " +
-        months[date.getMonth()] + " " +
-        date.getFullYear();
-}
+dateSlider.noUiSlider.on('update', function (values, handle) {
+    dateValues[handle].innerHTML = formatter.format(new Date(+values[handle]));
+});
 </code></pre>		</div>
 	</div>
 </section>
