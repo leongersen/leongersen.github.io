@@ -636,12 +636,12 @@ function mergeTooltips(slider, threshold, separator) {
                     var offset = 0;
 
                     poolPositions[poolIndex].forEach(function (value) {
-                        offset += 1000 - 10 * value;
+                        offset += 1000 - value;
                     });
 
                     var direction = isVertical ? 'bottom' : 'right';
                     var last = isRtl ? 0 : handlesInPool - 1;
-                    var lastOffset = 1000 - 10 * poolPositions[poolIndex][last];
+                    var lastOffset = 1000 - poolPositions[poolIndex][last];
                     offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
 
                     // Center this tooltip over the affected handles
@@ -757,12 +757,12 @@ function mergeTooltips(slider, threshold, separator) {
                     var offset = 0;
 
                     poolPositions[poolIndex].forEach(function (value) {
-                        offset += 1000 - 10 * value;
+                        offset += 1000 - value;
                     });
 
                     var direction = isVertical ? 'bottom' : 'right';
                     var last = isRtl ? 0 : handlesInPool - 1;
-                    var lastOffset = 1000 - 10 * poolPositions[poolIndex][last];
+                    var lastOffset = 1000 - poolPositions[poolIndex][last];
                     offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
 
                     // Center this tooltip over the affected handles
@@ -1226,7 +1226,7 @@ slider2.noUiSlider.on('slide', function (values, handle) {
 
 	<div class="view">
 
-		<p><a href="https://github.com/leongersen/noUiSlider/issues/733">Issue #733</a> asks about clicking pips to move the slider to their value. noUiSlider 11 adds a <code>data-value</code> attribute to all <code>.noUi-value</code> elements that makes this easy.</code></code></p>
+		<p><a href="https://github.com/leongersen/noUiSlider/issues/733">Issue #733</a> asks about clicking pips to move the slider to their value. All <code>.noUi-value</code> elements have a <code>data-value</code> attribute to facilitate this.</code></code></p>
 
 		<div class="example">
 			<div class="slider" id="slider-pips"></div>
@@ -1907,7 +1907,7 @@ toggleSlider.noUiSlider.on('update', function (values, handle) {
 
 	<div class="view">
 
-		<p>If you want to disable the edges of a slider, the set event can be used to reset the value if a limit is passed. Note how the handle 'bounces back' when it is released below <code>20</code> or above <code>80</code>. noUiSlider also supports disabling edges altogether, which can be done using the <a href="/nouislider/slider-options/#section-padding">padding option</a>.</p>
+		<p>To disable the edges of a slider, the set event can be used to reset the value if a limit is passed. Note how the handle 'bounces back' when it is released below <code>20</code> or above <code>80</code>. noUiSlider also supports disabling edges altogether, which can be done using the <a href="/nouislider/slider-options/#section-padding">padding option</a>.</p>
 
 		<div class="example">
 			<div id="soft"></div>
