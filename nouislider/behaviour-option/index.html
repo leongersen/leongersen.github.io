@@ -17,8 +17,8 @@ permalink: nouislider/behaviour-option/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1551" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1551"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1560" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1560"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/behaviour-option/">
 
@@ -89,6 +89,19 @@ noUiSlider.create(behaviourSlider, {
 </code></pre>	</div>
 </section>
 
+
+<section>
+    <ul>
+        <li><a href="#section-tap">Tap</a></li>
+        <li><a href="#section-tap">Drag</a></li>
+        <li><a href="#section-fixed">Fixed dragging</a></li>
+        <li><a href="#section-drag-all">Drag all handles</a></li>
+        <li><a href="#section-snap">Snap</a></li>
+        <li><a href="#section-hover">Hover</a></li>
+        <li><a href="#section-unconstrained">Unconstrained</a></li>
+        <li><a href="#section-smooth-steps">Smooth steps</a></li>
+    </ul>
+</section>
 
 <a href="#section-examples" id="section-examples" class="section-link">&sect;</a><h2>Example configurations</h2>
 
@@ -449,12 +462,66 @@ unconstrainedSlider.noUiSlider.on('update', function (values) {
 </section>
 
 
+<a href="#section-smooth-steps" id="section-smooth-steps" class="section-link">&sect;</a><h2>Smooth steps</h2>
+
+<section>
+
+	<div class="view">
+		<p>With this option set, handles will ignore <code>step</code> values while dragging. Steps are applied when a handle is released. The <code>"update"</code> event fires when a handle is released.</p>
+		<div class="example">
+			<div id="smooth-steps"></div>
+            <span class="example-val" id="smooth-steps-values"></span>
+			
+<script>
+var smoothStepsSlider = document.getElementById('smooth-steps');
+var smoothStepsValues = document.getElementById('smooth-steps-values');
+
+noUiSlider.create(smoothStepsSlider, {
+    start: [0, 100],
+    behaviour: 'smooth-steps',
+    step: 15,
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+smoothStepsSlider.noUiSlider.on('update', function (values) {
+    smoothStepsValues.innerHTML = values.join(' :: ');
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+		
+<pre><code>var smoothStepsSlider = document.getElementById('smooth-steps');
+var smoothStepsValues = document.getElementById('smooth-steps-values');
+
+noUiSlider.create(smoothStepsSlider, {
+    start: [0, 100],
+    behaviour: 'smooth-steps',
+    step: 15,
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+
+smoothStepsSlider.noUiSlider.on('update', function (values) {
+    smoothStepsValues.innerHTML = values.join(' :: ');
+});
+</code></pre>	</div>
+</section>
+
+
 <a href="#section-combined" id="section-combined" class="section-link">&sect;</a><h2>Combined options</h2>
 
 <section>
 
 	<div class="view">
-		<p>Most <code>'behaviour'</code> flags can be combined.</p>
+		<p>Most <code>'behaviour'</code> flags can be combined. This example combines <code>'tap'</code>, <code>'drag'</code> and <code>'smooth-steps'</code>.</p>
 		<div class="example">
 			<div id="combined"></div>
 			
@@ -463,7 +530,8 @@ var dragTapSlider = document.getElementById('combined');
 
 noUiSlider.create(dragTapSlider, {
     start: [40, 60],
-    behaviour: 'drag-tap',
+    behaviour: 'drag-smooth-steps-tap',
+    step: 10,
     connect: true,
     range: {
         'min': 20,
@@ -479,7 +547,8 @@ noUiSlider.create(dragTapSlider, {
 
 noUiSlider.create(dragTapSlider, {
     start: [40, 60],
-    behaviour: 'drag-tap',
+    behaviour: 'drag-smooth-steps-tap',
+    step: 10,
     connect: true,
     range: {
         'min': 20,
