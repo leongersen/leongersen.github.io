@@ -45,6 +45,7 @@ permalink: nouislider/examples/
     
 <section>
 	<ul>
+		<li><a href="#section-formatting">Number formatting</a></li>
 		<li><a href="#section-colorpicker">Color picker</a></li>
 		<li><a href="#section-styling">Styling</a></li>
 		<li><a href="#section-dates">Using dates</a></li>
@@ -68,6 +69,121 @@ permalink: nouislider/examples/
     <div class="notice">Can't find something? See the full <a href="/nouislider/reference/">options reference</a>.</div>
 </section>
 
+<a href="#section-formatting" id="section-formatting" class="section-link">&sect;</a><h1>Number formatting</h1>
+
+<section>
+
+    <div class="view">
+
+        <p>noUiSlider has a <code>format</code> option to configure both incoming and outgoing formatting.</p>
+
+        <p>In this example, the slider format uses <strong>no decimals</strong>. The <code>tooltips</code> use <strong>one decimal</strong>.</p>
+
+        <p>The <code>from</code> function takes a formatted value to parse. It gets a string and should return a number.</p>
+
+        <p>The <code>to</code> function takes a number to format. It gets a number and should return a string.</p>
+
+        <p>noUiSlider can optionally be used with the <code>wNumb</code> library for formatting. See <a href="/nouislider/number-formatting/">the documentation on number formatting</a> for more details.</p>
+
+        <div class="example">
+            <div id="formatting-slider"></div>
+            <span class="example-val" id="formatting-start"></span>
+            <span class="example-val" id="formatting-end"></span>
+            
+<script>
+var formatForSlider = {
+    from: function (formattedValue) {
+        return Number(formattedValue);
+    },
+    to: function(numericValue) {
+        return Math.round(numericValue);
+    }
+};
+</script>            
+<script>
+var formatSlider = document.getElementById('formatting-slider');
+
+noUiSlider.create(formatSlider, {
+    // Values are parsed as numbers using the "from" function in "format"
+    start: ['20.0', '80.0'],
+    range: {
+        'min': 0,
+        'max': 100
+    },
+    format: formatForSlider,
+    tooltips: {
+        // tooltips are output only, so only a "to" is needed
+        to: function(numericValue) {
+            return numericValue.toFixed(1);
+        }
+    }
+});
+
+// Values are parsed as numbers using the "from" function in "format"
+formatSlider.noUiSlider.set(['25.666', '57.66']);
+
+var formatValues = [
+    document.getElementById('formatting-start'),
+    document.getElementById('formatting-end')
+];
+
+formatSlider.noUiSlider.on('update', function (values, handle, unencoded) {
+    // "values" has the "to" function from "format" applied
+    // "unencoded" contains the raw numerical slider values
+    formatValues[handle].innerHTML = values[handle] + '<br><strong>No format:</strong> ' + unencoded[handle];
+});
+</script>        </div>
+    </div>
+
+    <div class="side">
+        
+<pre><code>var formatForSlider = {
+    from: function (formattedValue) {
+        return Number(formattedValue);
+    },
+    to: function(numericValue) {
+        return Math.round(numericValue);
+    }
+};
+</code></pre>
+        <div class="viewer-header">Slider with formatting</div>
+
+        <div class="viewer-content">
+            
+<pre><code>var formatSlider = document.getElementById('formatting-slider');
+
+noUiSlider.create(formatSlider, {
+    // Values are parsed as numbers using the "from" function in "format"
+    start: ['20.0', '80.0'],
+    range: {
+        'min': 0,
+        'max': 100
+    },
+    format: formatForSlider,
+    tooltips: {
+        // tooltips are output only, so only a "to" is needed
+        to: function(numericValue) {
+            return numericValue.toFixed(1);
+        }
+    }
+});
+
+// Values are parsed as numbers using the "from" function in "format"
+formatSlider.noUiSlider.set(['25.666', '57.66']);
+
+var formatValues = [
+    document.getElementById('formatting-start'),
+    document.getElementById('formatting-end')
+];
+
+formatSlider.noUiSlider.on('update', function (values, handle, unencoded) {
+    // "values" has the "to" function from "format" applied
+    // "unencoded" contains the raw numerical slider values
+    formatValues[handle].innerHTML = values[handle] + '<br><strong>No format:</strong> ' + unencoded[handle];
+});
+</code></pre>        </div>
+    </div>
+</section>
 <a href="#section-colorpicker" id="section-colorpicker" class="section-link">&sect;</a><h1>Colorpicker</h1>
 
 <section>
@@ -1324,16 +1440,16 @@ noUiSlider.create(hidingTooltipSlider, {
 	<div class="side">
 
 		
-<style>.noUi-tooltip {
+<style>#slider-hide .noUi-tooltip {
     display: none;
 }
-.noUi-active .noUi-tooltip {
+#slider-hide .noUi-active .noUi-tooltip {
     display: block;
 }
-</style><pre class="language-css"><code>.noUi-tooltip {
+</style><pre class="language-css"><code>#slider-hide .noUi-tooltip {
     display: none;
 }
-.noUi-active .noUi-tooltip {
+#slider-hide .noUi-active .noUi-tooltip {
     display: block;
 }
 </code></pre>	</div>
@@ -1419,7 +1535,7 @@ for (var i = 0; i < connect.length; i++) {
 
 		<p>Use of this API is not necessary for linear sliders, as the step is constant in that case.</p>
 
-		<p>We'll listen to keydown on the input element, and pass the event to a function so we can read the code that identifies the key.</p>
+		<p>A <code>keydown</code> listener is added to the input element, passing the event to a function to read the <code>code</code> that identifies the key.</p>
 
 		<div class="example">
 			<div id="steps-slider"></div>
