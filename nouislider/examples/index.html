@@ -45,6 +45,7 @@ permalink: nouislider/examples/
     
 <section>
 	<ul>
+		<li><a href="#section-values">Using an array of values</a></li>
 		<li><a href="#section-formatting">Number formatting</a></li>
 		<li><a href="#section-colorpicker">Color picker</a></li>
 		<li><a href="#section-styling">Styling</a></li>
@@ -58,7 +59,6 @@ permalink: nouislider/examples/
 		<li><a href="#section-colored-connect">Colored connect elements</a></li>
 		<li><a href="#section-steps-api">Changing the slider value by keypress</a></li>
 		<li><a href="#section-skipping">Skipping values on a slider</a></li>
-		<li><a href="#section-huge-numbers">Working with huge numbers</a></li>
 		<li><a href="#section-toggle">Create a toggle</a></li>
 		<li><a href="#section-soft-limits">Block the edges of a slider</a></li>
 		<li><a href="#section-from-center">Connect to the center of a slider</a></li>
@@ -69,6 +69,154 @@ permalink: nouislider/examples/
     <div class="notice">Can't find something? See the full <a href="/nouislider/reference/">options reference</a>.</div>
 </section>
 
+<a href="#section-values" id="section-values" class="section-link">&sect;</a><h1>Using an array of values</h1>
+
+<section>
+
+    <div class="view">
+
+        <p>noUiSlider allows <a href="/nouislider/slider-values/#section-non-linear">configuration of complex non-linear ranges</a> with various constraints on positioning and stepping. This setup might be overly complicated to display a slider with a pre-determined available selection of values.</p>
+
+        <p>For such a scenario, the <code>format</code> option can be used. This option provides a wrapper around the <code>get</code> and <code>set</code> methods, allowing for a simpler interface.</p>
+
+        <div class="example">
+            <div id="values-slider" style="margin-bottom: 60px"></div>
+            
+<script>
+var valuesSlider = document.getElementById('values-slider');
+var valuesForSlider = [1,2,3,4,5,6,7,8,10,12,14,16,20,24,28,32]; // 16 values
+
+var format = {
+    to: function(value) {
+        return valuesForSlider[Math.round(value)];
+    },
+    from: function (value) {
+        return valuesForSlider.indexOf(Number(value));
+    }
+};
+
+noUiSlider.create(valuesSlider, {
+    start: [8, 24],
+    // A linear range from 0 to 15 (16 values)
+    range: { min: 0, max: valuesForSlider.length - 1 },
+    // steps of 1
+    step: 1,
+    tooltips: true,
+    format: format,
+    pips: { mode: 'steps', format: format },
+});
+
+// The display values can be used to control the slider
+valuesSlider.noUiSlider.set(['7', '28']);
+</script>        </div>
+
+        <div class="example">
+            <div id="arbitrary-values-slider" style="margin-bottom: 60px"></div>
+            
+<script>
+var arbitraryValuesSlider = document.getElementById('arbitrary-values-slider');
+var arbitraryValuesForSlider = ['128MB', '256MB', '1GB', '8GB', '16GB', '32GB'];
+
+var format = {
+    to: function(value) {
+        return arbitraryValuesForSlider[Math.round(value)];
+    },
+    from: function (value) {
+        return arbitraryValuesForSlider.indexOf(value);
+    }
+};
+
+noUiSlider.create(arbitraryValuesSlider, {
+    // start values are parsed by 'format'
+    start: ['1GB', '16GB'],
+    range: { min: 0, max: arbitraryValuesForSlider.length - 1 },
+    step: 1,
+    tooltips: true,
+    format: format,
+    pips: { mode: 'steps', format: format, density: 50 },
+});
+</script>        </div>
+    </div>
+
+    <div class="side">
+        
+<pre><code>var valuesSlider = document.getElementById('values-slider');
+var valuesForSlider = [1,2,3,4,5,6,7,8,10,12,14,16,20,24,28,32]; // 16 values
+
+var format = {
+    to: function(value) {
+        return valuesForSlider[Math.round(value)];
+    },
+    from: function (value) {
+        return valuesForSlider.indexOf(Number(value));
+    }
+};
+
+noUiSlider.create(valuesSlider, {
+    start: [8, 24],
+    // A linear range from 0 to 15 (16 values)
+    range: { min: 0, max: valuesForSlider.length - 1 },
+    // steps of 1
+    step: 1,
+    tooltips: true,
+    format: format,
+    pips: { mode: 'steps', format: format },
+});
+
+// The display values can be used to control the slider
+valuesSlider.noUiSlider.set(['7', '28']);
+</code></pre>
+        <div class="viewer-header">What not to do</div>
+
+        <div class="viewer-content">
+            
+<pre><code>// This approach is not recommended
+range: {
+	  'min': 0,
+	 '7.6%': 2097152,
+	'15.3%': 4194304,
+	'23.0%': 8388608,
+	'30.7%': 16777216,
+	'38.4%': 33554432,
+	'46.1%': 67108864,
+	'53.8%': 134217728,
+	'61.5%': 268435456,
+	'69.2%': 536870912,
+	'76.9%': 1073741824,
+	'84.6%': 2147483648,
+	'92.3%': 4294967296,
+	  'max': 8589934592
+}
+</code></pre>        </div>
+
+        <div class="viewer-header">Using arbitrary (string) values</div>
+
+        <div class="viewer-content">
+            
+<pre><code>var arbitraryValuesSlider = document.getElementById('arbitrary-values-slider');
+var arbitraryValuesForSlider = ['128MB', '256MB', '1GB', '8GB', '16GB', '32GB'];
+
+var format = {
+    to: function(value) {
+        return arbitraryValuesForSlider[Math.round(value)];
+    },
+    from: function (value) {
+        return arbitraryValuesForSlider.indexOf(value);
+    }
+};
+
+noUiSlider.create(arbitraryValuesSlider, {
+    // start values are parsed by 'format'
+    start: ['1GB', '16GB'],
+    range: { min: 0, max: arbitraryValuesForSlider.length - 1 },
+    step: 1,
+    tooltips: true,
+    format: format,
+    pips: { mode: 'steps', format: format, density: 50 },
+});
+</code></pre>        </div>
+    </div>
+</section>
 <a href="#section-formatting" id="section-formatting" class="section-link">&sect;</a><h1>Number formatting</h1>
 
 <section>
@@ -1816,118 +1964,6 @@ skipSlider.noUiSlider.on('update', function (values, handle) {
     skipValues[handle].innerHTML = values[handle];
 });
 </code></pre>		</div>
-	</div>
-</section>
-<a href="#section-huge-numbers" id="section-huge-numbers" class="section-link">&sect;</a><h1>Using the slider with huge numbers</h1>
-
-<section>
-
-	<div class="view">
-
-		<p>If you are working with arbitrarily large numbers, you should not use these directly in noUiSlider as you'll run into some JavaScript limitations. Instead, you should map your values to an array of string values.</p>
-
-		<p>Numbers is JavaScript are "double precision floats", which can store numbers up to 2^53 <em>(9007199254740992)</em> precisely.</p>
-		
-		<p>For reference, see <a href="http://stackoverflow.com/questions/15529337/prevent-javascript-number-function-from-rounding-big-numbers">this StackOverflow question</a>, or <a href="https://github.com/leongersen/noUiSlider/issues/427">issue #427 filed on GitHub</a>.</p>
-
-		<p>As an example, see the <code>'range'</code> option for a RAM selector offering 14 steps from 512MB to 8GB. The <code>'step'</code> are omitted for clarity. The values are provided as bytes.</p>
-		
-		<p>A better solution would be to abstract the byte values away from the slider, looking up the byte values in an array. This keeps the slider configuration simple and prevents issues with floating point precision.</p>
-
-		<p><em>(These values fit within the limit just fine, but demonstrate the point really well!)</em></p>
-
-		<div class="example">
-			<div id="slider-huge"></div>
-			<span class="example-val" id="huge-value"></span>
-			
-<script>
-var bigValueSlider = document.getElementById('slider-huge');
-var bigValueSpan = document.getElementById('huge-value');
-
-noUiSlider.create(bigValueSlider, {
-    start: 0,
-    step: 1,
-    format: wNumb({
-        decimals: 0
-    }),
-    range: {
-        min: 0,
-        max: 13
-    }
-});
-</script>			
-<script>
-// Note how these are 'string' values, not numbers.
-var range = [
-    '0', '2097152', '4194304',
-    '8388608', '16777216', '33554432',
-    '67108864', '134217728', '268435456',
-    '536870912', '1073741824',
-    '2147483648', '4294967296',
-    '8589934592'
-];
-
-bigValueSlider.noUiSlider.on('update', function (values, handle) {
-    bigValueSpan.innerHTML = range[values[handle]];
-});
-</script>		</div>
-	</div>
-
-	<div class="side">
-
-		
-<pre><code>range: {
-	  'min': 0,
-	 '7.6%': 2097152,
-	'15.3%': 4194304,
-	'23.0%': 8388608,
-	'30.7%': 16777216,
-	'38.4%': 33554432,
-	'46.1%': 67108864,
-	'53.8%': 134217728,
-	'61.5%': 268435456,
-	'69.2%': 536870912,
-	'76.9%': 1073741824,
-	'84.6%': 2147483648,
-	'92.3%': 4294967296,
-	  'max': 8589934592
-}
-</code></pre>
-		<div class="viewer-header">Setup</div>
-
-		<div class="viewer-content">
-			
-<pre><code>var bigValueSlider = document.getElementById('slider-huge');
-var bigValueSpan = document.getElementById('huge-value');
-
-noUiSlider.create(bigValueSlider, {
-    start: 0,
-    step: 1,
-    format: wNumb({
-        decimals: 0
-    }),
-    range: {
-        min: 0,
-        max: 13
-    }
-});
-</code></pre>		</div>
-
-		
-<pre><code>// Note how these are 'string' values, not numbers.
-var range = [
-    '0', '2097152', '4194304',
-    '8388608', '16777216', '33554432',
-    '67108864', '134217728', '268435456',
-    '536870912', '1073741824',
-    '2147483648', '4294967296',
-    '8589934592'
-];
-
-bigValueSlider.noUiSlider.on('update', function (values, handle) {
-    bigValueSpan.innerHTML = range[values[handle]];
-});
-</code></pre>
 	</div>
 </section>
 <a href="#section-toggle" id="section-toggle" class="section-link">&sect;</a><h1>Creating a toggle</h1>
