@@ -49,6 +49,7 @@ permalink: nouislider/examples/
 		<li><a href="#section-formatting">Number formatting</a></li>
 		<li><a href="#section-colorpicker">Color picker</a></li>
 		<li><a href="#section-styling">Styling</a></li>
+		<li><a href="#section-pips">Interacting with Pips</a></li>
 		<li><a href="#section-dates">Using dates</a></li>
 		<li><a href="#section-merging-tooltips">Merging overlapping tooltips</a></li>
 		<li><a href="#section-html5">Working with HTML5 input types</a></li>
@@ -723,6 +724,133 @@ noUiSlider.create(squareSlider, {
 }
 </code></pre>        </div>
     </div>
+</section>
+<a href="#section-pips" id="section-pips" class="section-link">&sect;</a><h1>Interacting with pips</h1>
+
+<section>
+
+	<div class="view">
+		<p>When using the <a href="/nouislider/pips/">pips feature</a>, several interactions can be added. Pips can also be styled.</p>
+
+        <p>This example shows pips being displayed vertically, and highlighted when the slider handle is at that value.</p>
+
+        <p>Have a look at the <a href="/nouislider/examples/#section-click-pips">example on moving the slider by clicking pips</a>.</p>
+
+		<div class="example" style="padding-bottom: 80px">
+			<div id="slider-pips"></div>
+			
+<script>
+var pipsSlider = document.getElementById('slider-pips');
+
+noUiSlider.create(pipsSlider, {
+    start: [20, 80],
+    margin: 20,
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    },
+    step: 20,
+    pips: {
+        mode: 'steps',
+        density: 3
+    }
+});
+</script>			
+<script>
+var activePips = [null, null];
+
+pipsSlider.noUiSlider.on('update', function (values, handle) {
+    // Remove the active class from the current pip
+    if (activePips[handle]) {
+        activePips[handle].classList.remove('active-pip');
+    }
+
+    // Match the formatting for the pip
+    var dataValue = Math.round(values[handle]);
+
+    // Find the pip matching the value
+    activePips[handle] = pipsSlider.querySelector('.noUi-value[data-value="' + dataValue + '"]');
+
+    // Add the active class
+    if (activePips[handle]) {
+        activePips[handle].classList.add('active-pip');
+    }
+});
+</script>		</div>
+	</div>
+
+	<div class="side">
+
+		<div class="viewer-header">Slider with pips</div>
+
+		<div class="viewer-content">
+			
+<pre><code>var pipsSlider = document.getElementById('slider-pips');
+
+noUiSlider.create(pipsSlider, {
+    start: [20, 80],
+    margin: 20,
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    },
+    step: 20,
+    pips: {
+        mode: 'steps',
+        density: 3
+    }
+});
+</code></pre>		</div>
+
+        
+<pre><code>var activePips = [null, null];
+
+pipsSlider.noUiSlider.on('update', function (values, handle) {
+    // Remove the active class from the current pip
+    if (activePips[handle]) {
+        activePips[handle].classList.remove('active-pip');
+    }
+
+    // Match the formatting for the pip
+    var dataValue = Math.round(values[handle]);
+
+    // Find the pip matching the value
+    activePips[handle] = pipsSlider.querySelector('.noUi-value[data-value="' + dataValue + '"]');
+
+    // Add the active class
+    if (activePips[handle]) {
+        activePips[handle].classList.add('active-pip');
+    }
+});
+</code></pre>
+		<div class="viewer-header">Vertical Pips</div>
+
+		<div class="viewer-content">
+            
+<style>#slider-pips .noUi-value-horizontal {
+    -webkit-transform: translate(-50%, 25px);
+    transform: translate(-50%, 25px);
+    writing-mode: vertical-lr;
+}
+
+.active-pip {
+    font-weight: bold;
+    color: red;
+}
+</style><pre class="language-css"><code>#slider-pips .noUi-value-horizontal {
+    -webkit-transform: translate(-50%, 25px);
+    transform: translate(-50%, 25px);
+    writing-mode: vertical-lr;
+}
+
+.active-pip {
+    font-weight: bold;
+    color: red;
+}
+</code></pre>		</div>
+	</div>
 </section>
 <a href="#section-dates" id="section-dates" class="section-link">&sect;</a><h1>Working with dates</h1>
 
@@ -1493,13 +1621,13 @@ slider2.noUiSlider.on('slide', function (values, handle) {
 		<p><a href="https://github.com/leongersen/noUiSlider/issues/733">Issue #733</a> asks about clicking pips to move the slider to their value. All <code>.noUi-value</code> elements have a <code>data-value</code> attribute to facilitate this.</code></code></p>
 
 		<div class="example">
-			<div class="slider" id="slider-pips"></div>
+			<div class="slider" id="slider-click-pips"></div>
 
 			
 <script>
-var pipsSlider = document.getElementById('slider-pips');
+var clickPipsSlider = document.getElementById('slider-click-pips');
 
-noUiSlider.create(pipsSlider, {
+noUiSlider.create(clickPipsSlider, {
     range: {
         min: 0,
         max: 100
@@ -1509,11 +1637,11 @@ noUiSlider.create(pipsSlider, {
 });
 </script>			
 <script>
-var pips = pipsSlider.querySelectorAll('.noUi-value');
+var pips = clickPipsSlider.querySelectorAll('.noUi-value');
 
 function clickOnPip() {
     var value = Number(this.getAttribute('data-value'));
-    pipsSlider.noUiSlider.set(value);
+    clickPipsSlider.noUiSlider.set(value);
 }
 
 for (var i = 0; i < pips.length; i++) {
@@ -1531,9 +1659,9 @@ for (var i = 0; i < pips.length; i++) {
 
 		<div class="viewer-content">
 			
-<pre><code>var pipsSlider = document.getElementById('slider-pips');
+<pre><code>var clickPipsSlider = document.getElementById('slider-click-pips');
 
-noUiSlider.create(pipsSlider, {
+noUiSlider.create(clickPipsSlider, {
     range: {
         min: 0,
         max: 100
@@ -1544,11 +1672,11 @@ noUiSlider.create(pipsSlider, {
 </code></pre>		</div>
 
 		
-<pre><code>var pips = pipsSlider.querySelectorAll('.noUi-value');
+<pre><code>var pips = clickPipsSlider.querySelectorAll('.noUi-value');
 
 function clickOnPip() {
     var value = Number(this.getAttribute('data-value'));
-    pipsSlider.noUiSlider.set(value);
+    clickPipsSlider.noUiSlider.set(value);
 }
 
 for (var i = 0; i < pips.length; i++) {
