@@ -17,8 +17,8 @@ permalink: nouislider/more/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1560" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1560"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1570" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1570"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/more/">
 
@@ -58,7 +58,7 @@ permalink: nouislider/more/
 
 	<div class="view">
 
-		<p>Disabling a slider is identical to disabling a checkbox or textarea; add the <code class="language-markup">disabled</code> attribute.</p>
+        <p>A slider can be disabled by calling the <code>disable</code> method in the API.</p>
 
 		<p>A disabled slider can't be changed by user interaction (sliding, clicking or touching), but its value can still be changed using the <code>.set()</code> method.</p>
 
@@ -66,7 +66,9 @@ permalink: nouislider/more/
 
 		<p>The slider below is disabled when the checkbox is checked, and re-enabled when it is unchecked.</p>
 
-		<p>Individual handles can be disabled by adding a <code>disabled</code> attribute to a <code>.noUi-origin</code> element.</p>
+		<p>Individual handles can be disabled by calling the <code>disable</code> with a zero-index handle number. Disabling an individual handle will also prevent it from having <code>focus</code>.</p>
+
+        <p>The slider or handles can re re-enabled using the <code>enable</code> method.</p>
 
 		<div class="example">
 			<div id="disable1"></div>
@@ -93,17 +95,16 @@ var slider1 = document.getElementById('disable1'),
     slider2 = document.getElementById('disable2'),
     checkbox1 = document.getElementById('checkbox1'),
     checkbox2 = document.getElementById('checkbox2'),
-    checkbox3 = document.getElementById('checkbox3'),
-    origins = slider2.querySelectorAll('.noUi-origin');
+    checkbox3 = document.getElementById('checkbox3');
 
-function toggle(element) {
+function toggle(checkbox, slider, handleNumber) {
 
     // If the checkbox is checked, disabled the slider.
     // Otherwise, re-enable it.
-    if (this.checked) {
-        element.setAttribute('disabled', true);
+    if (checkbox.checked) {
+        slider.noUiSlider.disable(handleNumber);
     } else {
-        element.removeAttribute('disabled');
+        slider.noUiSlider.enable(handleNumber);
     }
 }
 
@@ -125,15 +126,15 @@ noUiSlider.create(slider2, {
 });
 
 checkbox1.addEventListener('click', function () {
-    toggle.call(this, slider1);
+    toggle(this, slider1);
 });
 
 checkbox2.addEventListener('click', function () {
-    toggle.call(this, origins[0]);
+    toggle(this, slider2, 0);
 });
 
 checkbox3.addEventListener('click', function () {
-    toggle.call(this, origins[1]);
+    toggle(this, slider2, 1);
 });
 </script>		</div>
 	</div>
@@ -142,14 +143,13 @@ checkbox3.addEventListener('click', function () {
 
 		
 <pre><code>// To disable
-slider.setAttribute('disabled', true);
+slider.noUiSlider.disable();
 
 // To re-enable
-slider.removeAttribute('disabled');
+slider.noUiSlider.enable();
 
 // To disable one handle
-var origins = slider.querySelectorAll('.noUi-origin');
-origins[0].setAttribute('disabled', true);
+slider.noUiSlider.disable(1);
 </code></pre>
 		<div class="viewer-header">Toggling the <code>disabled</code> attribute</div>
 
@@ -159,17 +159,16 @@ origins[0].setAttribute('disabled', true);
     slider2 = document.getElementById('disable2'),
     checkbox1 = document.getElementById('checkbox1'),
     checkbox2 = document.getElementById('checkbox2'),
-    checkbox3 = document.getElementById('checkbox3'),
-    origins = slider2.querySelectorAll('.noUi-origin');
+    checkbox3 = document.getElementById('checkbox3');
 
-function toggle(element) {
+function toggle(checkbox, slider, handleNumber) {
 
     // If the checkbox is checked, disabled the slider.
     // Otherwise, re-enable it.
-    if (this.checked) {
-        element.setAttribute('disabled', true);
+    if (checkbox.checked) {
+        slider.noUiSlider.disable(handleNumber);
     } else {
-        element.removeAttribute('disabled');
+        slider.noUiSlider.enable(handleNumber);
     }
 }
 
@@ -191,15 +190,15 @@ noUiSlider.create(slider2, {
 });
 
 checkbox1.addEventListener('click', function () {
-    toggle.call(this, slider1);
+    toggle(this, slider1);
 });
 
 checkbox2.addEventListener('click', function () {
-    toggle.call(this, origins[0]);
+    toggle(this, slider2, 0);
 });
 
 checkbox3.addEventListener('click', function () {
-    toggle.call(this, origins[1]);
+    toggle(this, slider2, 1);
 });
 </code></pre>		</div>
 	</div>
