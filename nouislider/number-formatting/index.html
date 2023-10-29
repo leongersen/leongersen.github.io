@@ -17,8 +17,8 @@ permalink: nouislider/number-formatting/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1570" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1570"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1571" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1571"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/number-formatting/">
 
@@ -171,11 +171,16 @@ inputFormat.addEventListener('change', function () {
 var tooltipSlider = document.getElementById('slider-tooltips');
 
 noUiSlider.create(tooltipSlider, {
-    start: [20, 80, 120],
+    start: [20, 80, 120, 140],
     tooltips: [
-        false, // no tooltip
-        wNumb({decimals: 1}), // tooltip with custom formatting
-        true // tooltip with default formatting
+        // no tooltip
+        false,
+        // tooltip with custom formatting
+        wNumb({decimals: 1}),
+        // tooltip with default formatting
+        true,
+        // tooltip with manual formatting
+        { to: function(value) { return '❤️ ' + value; } }
     ],
     /**
      * Tooltip with default formatting on all handles:
@@ -183,15 +188,14 @@ noUiSlider.create(tooltipSlider, {
      *
      * Tooltip with specific formatting on all handles:
      * tooltips: {
-     *     to: ...,
-     *     from: ...
+     *     to: ...
      * }
      *
      * Tooltip with specific formatting on each handle:
      * tooltips: [
-     *     { to: ..., from: ... },
-     *     { to: ..., from: ... },
-     *     { to: ..., from: ... },
+     *     { to: ... },
+     *     { to: ... },
+     *     { to: ... },
      * ]
      */
     range: {
@@ -207,11 +211,16 @@ noUiSlider.create(tooltipSlider, {
 <pre><code>var tooltipSlider = document.getElementById('slider-tooltips');
 
 noUiSlider.create(tooltipSlider, {
-    start: [20, 80, 120],
+    start: [20, 80, 120, 140],
     tooltips: [
-        false, // no tooltip
-        wNumb({decimals: 1}), // tooltip with custom formatting
-        true // tooltip with default formatting
+        // no tooltip
+        false,
+        // tooltip with custom formatting
+        wNumb({decimals: 1}),
+        // tooltip with default formatting
+        true,
+        // tooltip with manual formatting
+        { to: function(value) { return '❤️ ' + value; } }
     ],
     /**
      * Tooltip with default formatting on all handles:
@@ -219,15 +228,14 @@ noUiSlider.create(tooltipSlider, {
      *
      * Tooltip with specific formatting on all handles:
      * tooltips: {
-     *     to: ...,
-     *     from: ...
+     *     to: ...
      * }
      *
      * Tooltip with specific formatting on each handle:
      * tooltips: [
-     *     { to: ..., from: ... },
-     *     { to: ..., from: ... },
-     *     { to: ..., from: ... },
+     *     { to: ... },
+     *     { to: ... },
+     *     { to: ... },
      * ]
      */
     range: {
