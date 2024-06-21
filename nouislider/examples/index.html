@@ -17,8 +17,8 @@ permalink: nouislider/examples/
     <link href="/nouislider/documentation/assets/prism.css" rel="stylesheet">
     <script src="/nouislider/documentation/assets/wNumb.js"></script>
 
-    <link href="/nouislider/dist/nouislider.css?v=1580" rel="stylesheet">
-    <script src="/nouislider/dist/nouislider.js?v=1580"></script>
+    <link href="/nouislider/dist/nouislider.css?v=1581" rel="stylesheet">
+    <script src="/nouislider/dist/nouislider.js?v=1581"></script>
 
     <link rel="canonical" href="https://refreshless.com/nouislider/examples/">
 
@@ -2293,14 +2293,62 @@ noUiSlider.create(softSlider, {
 
     <div class="view">
 
-        <p><a href="https://github.com/leongersen/noUiSlider/issues/371">Issue #371</a> requested a slider with the connect option originating from the slider center.</p>
+        <p><a href="https://github.com/leongersen/noUiSlider/issues/371">Issue #371</a> requested a slider with the connect option originating from the slider center.
+            This can be implemented by hiding one of the handles and using the <code>"unconstrained"</code> behaviour.</p>
 
-        <p>An example of how to implement this is <a href="https://jsfiddle.net/leongersen/9hyfv0bw/11/">available as a JSFiddle</a>.</p>
+        <div class="example">
+            <div id="from-center"></div>
+            
+<script>
+var fromCenterSlider = document.getElementById('from-center');
 
+noUiSlider.create(fromCenterSlider, {
+    start: [50, 80],
+    behaviour: 'unconstrained',
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>            
+<script>
+var fromCenterSlider = document.getElementById('from-center');
+
+noUiSlider.create(fromCenterSlider, {
+    start: [50, 80],
+    behaviour: 'unconstrained',
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</script>        </div>
     </div>
 
     <div class="side">
-    </div>
+
+        
+<style>#from-center .noUi-handle[data-handle="0"] {
+    display: none;
+}
+</style><pre class="language-css"><code>#from-center .noUi-handle[data-handle="0"] {
+    display: none;
+}
+</code></pre>        
+<pre><code>var fromCenterSlider = document.getElementById('from-center');
+
+noUiSlider.create(fromCenterSlider, {
+    start: [50, 80],
+    behaviour: 'unconstrained',
+    connect: true,
+    range: {
+        'min': 0,
+        'max': 100
+    }
+});
+</code></pre>    </div>
 </section>
 </div>
 
